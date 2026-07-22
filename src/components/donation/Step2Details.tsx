@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import styled from "styled-components";
-import { Field, Input } from "../ui";
+import { ErrorText, Field, Input } from "../ui";
 import { CzechFlag, SlovakFlag, ChevronDownIcon } from "../icons";
 import { useDonationForm } from "../donation/DonationContext";
 import { Heading, Section, SectionTitle } from "../donation/DonationShell";
@@ -93,7 +93,12 @@ const PrefixWrap = styled.div`
 `;
 
 export default function Step2Details() {
-  const { register, watch, setValue } = useDonationForm();
+  const {
+    register,
+    watch,
+    setValue,
+    formState: { errors },
+  } = useDonationForm();
   const phonePrefix = watch("phonePrefix");
   const [prefixOpen, setPrefixOpen] = useState(false);
 
@@ -112,15 +117,23 @@ export default function Step2Details() {
             Meno
             <Input
               placeholder="Zadajte Vaše meno"
+              aria-invalid={!!errors.firstName}
               {...register("firstName")}
             />
+            {errors.firstName && (
+              <ErrorText role="alert">{errors.firstName.message}</ErrorText>
+            )}
           </Field>
           <Field>
             Priezvisko
             <Input
               placeholder="Zadajte Vaše priezvisko"
+              aria-invalid={!!errors.lastName}
               {...register("lastName")}
             />
+            {errors.lastName && (
+              <ErrorText role="alert">{errors.lastName.message}</ErrorText>
+            )}
           </Field>
         </NameGrid>
         <Field>
@@ -128,8 +141,12 @@ export default function Step2Details() {
           <Input
             type="email"
             placeholder="Zadajte Váš e-mail"
+            aria-invalid={!!errors.email}
             {...register("email")}
           />
+          {errors.email && (
+            <ErrorText role="alert">{errors.email.message}</ErrorText>
+          )}
         </Field>
         <Field>
           Telefónne číslo
@@ -173,9 +190,13 @@ export default function Step2Details() {
             <input
               type="tel"
               placeholder="+ 420 123 321 123"
+              aria-invalid={!!errors.phone}
               {...register("phone")}
             />
           </PhoneRow>
+          {errors.phone && (
+            <ErrorText role="alert">{errors.phone.message}</ErrorText>
+          )}
         </Field>
       </Section>
     </>

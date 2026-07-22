@@ -52,6 +52,12 @@ export const Field = styled.label`
   }
 `;
 
+export const ErrorText = styled.p`
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--danger);
+`;
+
 export const Input = styled.input`
   height: 56px;
   border: 1px solid transparent;

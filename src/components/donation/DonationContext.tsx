@@ -1,6 +1,8 @@
 "use client";
 
+import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
+import { donationSchema, type FormData } from "./donationSchema";
 
 export const SHELTERS = [
   "Mestský útulok, Žilina",
@@ -12,17 +14,7 @@ export const SHELTERS = [
 
 export const PRESET_AMOUNTS = [5, 10, 20, 30, 50, 100];
 
-export type FormData = {
-  mode: "shelter" | "foundation";
-  shelter: string;
-  amount: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  phonePrefix: "+421" | "+420";
-  phone: string;
-  gdpr: boolean;
-};
+export type { FormData };
 
 export const initialData: FormData = {
   mode: "foundation",
@@ -37,7 +29,11 @@ export const initialData: FormData = {
 };
 
 export function DonationProvider({ children }: { children: React.ReactNode }) {
-  const methods = useForm<FormData>({ defaultValues: initialData });
+  const methods = useForm<FormData>({
+    defaultValues: initialData,
+    resolver: zodResolver(donationSchema),
+    mode: "onTouched",
+  });
 
   return <FormProvider {...methods}>{children}</FormProvider>;
 }

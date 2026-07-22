@@ -1,7 +1,7 @@
 "use client";
 
 import styled, { css } from "styled-components";
-import { Field, Select } from "../ui";
+import { ErrorText, Field, Select } from "../ui";
 import {
   PRESET_AMOUNTS,
   SHELTERS,
@@ -108,8 +108,18 @@ const Chip = styled.button<{ $active: boolean }>`
         `}
 `;
 
+const AmountError = styled(ErrorText)`
+  text-align: center;
+`;
+
 export default function Step1Amount() {
-  const { register, watch, setValue } = useDonationForm();
+  const {
+    register,
+    watch,
+    setValue,
+    clearErrors,
+    formState: { errors },
+  } = useDonationForm();
   const mode = watch("mode");
   const amount = watch("amount");
 
@@ -134,7 +144,10 @@ export default function Step1Amount() {
           role="tab"
           aria-selected={mode === "foundation"}
           $active={mode === "foundation"}
-          onClick={() => setValue("mode", "foundation")}
+          onClick={() => {
+            setValue("mode", "foundation");
+            clearErrors("shelter");
+          }}
         >
           Prispieť celej nadácii
         </ModeButton>
@@ -151,6 +164,7 @@ export default function Step1Amount() {
           </span>
           <Select
             placeholder="Vyberte útulok zo zoznamu"
+            aria-invalid={!!errors.shelter}
             {...register("shelter")}
           >
             {SHELTERS.map((s) => (
@@ -159,6 +173,9 @@ export default function Step1Amount() {
               </option>
             ))}
           </Select>
+          {errors.shelter && (
+            <ErrorText role="alert">{errors.shelter.message}</ErrorText>
+          )}
         </Field>
       </Section>
 
@@ -169,20 +186,28 @@ export default function Step1Amount() {
             type="text"
             inputMode="numeric"
             aria-label="Suma v eurách"
+            aria-invalid={!!errors.amount}
             placeholder="0"
             value={amount}
             onChange={(e) =>
-              setValue("amount", e.target.value.replace(/[^0-9]/g, ""))
+              setValue("amount", e.target.value.replace(/[^0-9]/g, ""), {
+                shouldValidate: true,
+              })
             }
           />
           <AmountCurrency>€</AmountCurrency>
         </AmountInputRow>
+        {errors.amount && (
+          <AmountError role="alert">{errors.amount.message}</AmountError>
+        )}
         <Chips>
           {PRESET_AMOUNTS.map((a) => (
             <Chip
               key={a}
               $active={amount === String(a)}
-              onClick={() => setValue("amount", String(a))}
+              onClick={() =>
+                setValue("amount", String(a), { shouldValidate: true })
+              }
             >
               {a} €
             </Chip>

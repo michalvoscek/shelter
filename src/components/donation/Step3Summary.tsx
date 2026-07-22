@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { Checkbox } from "../ui";
+import { Checkbox, ErrorText } from "../ui";
 import { useDonationForm } from "../donation/DonationContext";
 import {
   Heading,
@@ -35,7 +35,11 @@ const SummaryRow = styled.div`
 `;
 
 export default function Step3Summary() {
-  const { register, watch } = useDonationForm();
+  const {
+    register,
+    watch,
+    formState: { errors },
+  } = useDonationForm();
   const data = watch();
 
   return (
@@ -80,9 +84,12 @@ export default function Step3Summary() {
           </SummaryRow>
         </SummaryList>
         <Divider />
-        <Checkbox {...register("gdpr")}>
+        <Checkbox aria-invalid={!!errors.gdpr} {...register("gdpr")}>
           Súhlasím so spracovaním mojich osobných údajov
         </Checkbox>
+        {errors.gdpr && (
+          <ErrorText role="alert">{errors.gdpr.message}</ErrorText>
+        )}
       </Section>
     </>
   );

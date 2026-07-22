@@ -3,7 +3,9 @@
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import styled from "styled-components";
+import type { FieldPath } from "react-hook-form";
 import { DonationProvider, useDonationForm } from "./DonationContext";
+import type { FormData } from "./DonationContext";
 import Stepper from "../Stepper";
 import Footer from "../Footer";
 import { Button } from "../ui";
@@ -82,6 +84,11 @@ const Actions = styled.div`
 
 const STEP_PATHS = ["/", "/personal-data", "/confirmation"];
 
+const STEP_FIELDS: FieldPath<FormData>[][] = [
+  ["shelter", "amount"],
+  ["firstName", "lastName", "email", "phone"],
+];
+
 function pathToStep(pathname: string): number {
   const i = STEP_PATHS.indexOf(pathname);
   return i === -1 ? 0 : i;
@@ -91,15 +98,29 @@ function DonationChrome({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const step = pathToStep(pathname);
-  const { getValues } = useDonationForm();
+  const { trigger, handleSubmit } = useDonationForm();
 
   const back = () => router.push(STEP_PATHS[Math.max(0, step - 1)]);
-  const next = () => router.push(STEP_PATHS[Math.min(2, step + 1)]);
-
-  const submit = () => {
-    // TODO: POST https://frontend-assignment-api.goodrequest.dev
-    console.log("Odosielam formulár:", getValues());
+  const next = async () => {
+    if (await trigger(STEP_FIELDS[step])) {
+      router.push(STEP_PATHS[Math.min(2, step + 1)]);
+    }
   };
+
+  const submit = handleSubmit(
+    (data) => {
+      // TODO: POST https://frontend-assignment-api.goodrequest.dev
+      console.log("Odosielam formulár:", data);
+    },
+    (errors) => {
+      const invalidStep = STEP_FIELDS.findIndex((fields) =>
+        fields.some((field) => errors[field]),
+      );
+      if (invalidStep !== -1) {
+        router.push(STEP_PATHS[invalidStep]);
+      }
+    },
+  );
 
   return (
     <Layout>
