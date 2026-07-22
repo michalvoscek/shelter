@@ -166,13 +166,6 @@ const AmountInputRow = styled.div`
   }
 `;
 
-const AmountDivider = styled.span`
-  width: 1px;
-  height: 36px;
-  background: var(--text);
-  margin-bottom: 8px;
-`;
-
 const AmountCurrency = styled.span`
   font-size: 22px;
   font-weight: 500;
@@ -416,7 +409,6 @@ export default function DonationForm() {
                     set("amount", e.target.value.replace(/[^0-9]/g, ""))
                   }
                 />
-                <AmountDivider aria-hidden />
                 <AmountCurrency>€</AmountCurrency>
               </AmountInputRow>
               <Chips>
