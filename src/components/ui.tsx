@@ -124,7 +124,7 @@ export function Select({
 }) {
   return (
     <SelectWrapper>
-      <StyledSelect required defaultValue="" {...props}>
+      <StyledSelect required {...props}>
         <option value="" disabled hidden>
           {placeholder}
         </option>
