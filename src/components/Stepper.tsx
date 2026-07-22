@@ -1,0 +1,96 @@
+"use client";
+
+import { Fragment } from "react";
+import styled, { css } from "styled-components";
+import { CheckIcon } from "./icons";
+
+const STEPS = ["Výber útulku", "Osobné údaje", "Potvrdenie"];
+
+const Wrapper = styled.ol`
+  display: flex;
+  align-items: center;
+  list-style: none;
+  width: 100%;
+`;
+
+const Connector = styled.li`
+  flex: 1 1 48px;
+  height: 1px;
+  background: var(--border);
+  margin: 0 16px;
+`;
+
+const Step = styled.li<{ $state: "done" | "active" | "todo" }>`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 16px;
+  font-weight: 500;
+  white-space: nowrap;
+
+  ${({ $state }) =>
+    $state === "todo"
+      ? css`
+          color: var(--text-muted);
+        `
+      : css`
+          color: var(--text);
+        `}
+`;
+
+const Circle = styled.span<{ $state: "done" | "active" | "todo" }>`
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  font-size: 16px;
+  font-weight: 600;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+  ${({ $state }) => {
+    switch ($state) {
+      case "active":
+        return css`
+          background: var(--primary);
+          color: var(--white);
+          border: 1px solid var(--primary);
+        `;
+      case "done":
+        return css`
+          background: var(--white);
+          color: var(--primary);
+          border: 1px solid var(--primary);
+        `;
+      default:
+        return css`
+          background: var(--white);
+          color: var(--text-muted);
+          border: 1px solid var(--border);
+        `;
+    }
+  }}
+`;
+
+export default function Stepper({ current }: { current: number }) {
+  return (
+    <Wrapper aria-label="Postup formulára">
+      {STEPS.map((label, i) => {
+        const state = i < current ? "done" : i === current ? "active" : "todo";
+        return (
+          <Fragment key={label}>
+            {i > 0 && <Connector aria-hidden />}
+            <Step $state={state} aria-current={i === current ? "step" : undefined}>
+              <Circle $state={state}>
+                {state === "done" ? <CheckIcon size={18} /> : i + 1}
+              </Circle>
+              {label}
+            </Step>
+          </Fragment>
+        );
+      })}
+    </Wrapper>
+  );
+}
