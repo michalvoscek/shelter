@@ -1,10 +1,15 @@
 "use client";
 
 import { Fragment } from "react";
+import Link from "next/link";
 import styled, { css } from "styled-components";
 import { CheckIcon } from "./icons";
 
-const STEPS = ["Výber útulku", "Osobné údaje", "Potvrdenie"];
+const STEPS = [
+  { label: "Výber útulku", href: "/" },
+  { label: "Osobné údaje", href: "/osobne-udaje" },
+  { label: "Potvrdenie", href: "/potvrdenie" },
+];
 
 const Wrapper = styled.ol`
   display: flex;
@@ -21,9 +26,6 @@ const Connector = styled.li`
 `;
 
 const Step = styled.li<{ $state: "done" | "active" | "todo" }>`
-  display: flex;
-  align-items: center;
-  gap: 12px;
   font-size: 16px;
   font-weight: 500;
   white-space: nowrap;
@@ -36,6 +38,13 @@ const Step = styled.li<{ $state: "done" | "active" | "todo" }>`
       : css`
           color: var(--text);
         `}
+`;
+
+const StepLink = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: inherit;
 `;
 
 const Circle = styled.span<{ $state: "done" | "active" | "todo" }>`
@@ -77,16 +86,21 @@ const Circle = styled.span<{ $state: "done" | "active" | "todo" }>`
 export default function Stepper({ current }: { current: number }) {
   return (
     <Wrapper aria-label="Postup formulára">
-      {STEPS.map((label, i) => {
+      {STEPS.map((step, i) => {
         const state = i < current ? "done" : i === current ? "active" : "todo";
         return (
-          <Fragment key={label}>
+          <Fragment key={step.label}>
             {i > 0 && <Connector aria-hidden />}
-            <Step $state={state} aria-current={i === current ? "step" : undefined}>
-              <Circle $state={state}>
-                {state === "done" ? <CheckIcon size={18} /> : i + 1}
-              </Circle>
-              {label}
+            <Step
+              $state={state}
+              aria-current={i === current ? "step" : undefined}
+            >
+              <StepLink href={step.href}>
+                <Circle $state={state}>
+                  {state === "done" ? <CheckIcon size={18} /> : i + 1}
+                </Circle>
+                {step.label}
+              </StepLink>
             </Step>
           </Fragment>
         );
