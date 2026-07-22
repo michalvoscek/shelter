@@ -141,10 +141,12 @@ export default function Step1Amount() {
       <Section>
         <SectionTitle>O projekte</SectionTitle>
         <Field>
-          Útulok{" "}
-          {data.mode === "foundation" ? (
-            <span className="optional">(Nepovinné)</span>
-          ) : null}
+          <span>
+            Útulok{" "}
+            {data.mode === "foundation" ? (
+              <span className="optional">(Nepovinné)</span>
+            ) : null}
+          </span>
           <Select
             placeholder="Vyberte útulok zo zoznamu"
             value={data.shelter}
