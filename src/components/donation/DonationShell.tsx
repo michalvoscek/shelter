@@ -80,7 +80,7 @@ const Actions = styled.div`
   padding-top: 16px;
 `;
 
-const STEP_PATHS = ["/", "/osobne-udaje", "/potvrdenie"];
+const STEP_PATHS = ["/", "/personal-data", "/confirmation"];
 
 function pathToStep(pathname: string): number {
   const i = STEP_PATHS.indexOf(pathname);

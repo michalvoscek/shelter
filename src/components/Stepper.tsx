@@ -7,8 +7,8 @@ import { CheckIcon } from "./icons";
 
 const STEPS = [
   { label: "Výber útulku", href: "/" },
-  { label: "Osobné údaje", href: "/osobne-udaje" },
-  { label: "Potvrdenie", href: "/potvrdenie" },
+  { label: "Osobné údaje", href: "/personal-data" },
+  { label: "Potvrdenie", href: "/confirmation" },
 ];
 
 const Wrapper = styled.ol`

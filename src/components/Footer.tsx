@@ -60,8 +60,8 @@ export default function Footer() {
         >
           <InstagramIcon size={20} />
         </a>
-        <Link href="/kontakt">Kontakt</Link>
-        <Link href="/o-projekte">O projekte</Link>
+        <Link href="/contact">Kontakt</Link>
+        <Link href="/about">O projekte</Link>
       </Nav>
     </FooterBar>
   );
