@@ -5,7 +5,7 @@ import { Field, Select } from "../ui";
 import {
   PRESET_AMOUNTS,
   SHELTERS,
-  useDonation,
+  useDonationForm,
 } from "../donation/DonationContext";
 import { Heading, Section, SectionTitle } from "../donation/DonationShell";
 
@@ -109,7 +109,9 @@ const Chip = styled.button<{ $active: boolean }>`
 `;
 
 export default function Step1Amount() {
-  const { data, set } = useDonation();
+  const { register, watch, setValue } = useDonationForm();
+  const mode = watch("mode");
+  const amount = watch("amount");
 
   return (
     <>
@@ -122,17 +124,17 @@ export default function Step1Amount() {
       <ModeToggle role="tablist" aria-label="Forma pomoci">
         <ModeButton
           role="tab"
-          aria-selected={data.mode === "shelter"}
-          $active={data.mode === "shelter"}
-          onClick={() => set("mode", "shelter")}
+          aria-selected={mode === "shelter"}
+          $active={mode === "shelter"}
+          onClick={() => setValue("mode", "shelter")}
         >
           Prispieť konkrétnemu útulku
         </ModeButton>
         <ModeButton
           role="tab"
-          aria-selected={data.mode === "foundation"}
-          $active={data.mode === "foundation"}
-          onClick={() => set("mode", "foundation")}
+          aria-selected={mode === "foundation"}
+          $active={mode === "foundation"}
+          onClick={() => setValue("mode", "foundation")}
         >
           Prispieť celej nadácii
         </ModeButton>
@@ -143,14 +145,13 @@ export default function Step1Amount() {
         <Field>
           <span>
             Útulok{" "}
-            {data.mode === "foundation" ? (
+            {mode === "foundation" ? (
               <span className="optional">(Nepovinné)</span>
             ) : null}
           </span>
           <Select
             placeholder="Vyberte útulok zo zoznamu"
-            value={data.shelter}
-            onChange={(e) => set("shelter", e.target.value)}
+            {...register("shelter")}
           >
             {SHELTERS.map((s) => (
               <option key={s} value={s}>
@@ -169,9 +170,9 @@ export default function Step1Amount() {
             inputMode="numeric"
             aria-label="Suma v eurách"
             placeholder="0"
-            value={data.amount}
+            value={amount}
             onChange={(e) =>
-              set("amount", e.target.value.replace(/[^0-9]/g, ""))
+              setValue("amount", e.target.value.replace(/[^0-9]/g, ""))
             }
           />
           <AmountCurrency>€</AmountCurrency>
@@ -180,8 +181,8 @@ export default function Step1Amount() {
           {PRESET_AMOUNTS.map((a) => (
             <Chip
               key={a}
-              $active={data.amount === String(a)}
-              onClick={() => set("amount", String(a))}
+              $active={amount === String(a)}
+              onClick={() => setValue("amount", String(a))}
             >
               {a} €
             </Chip>

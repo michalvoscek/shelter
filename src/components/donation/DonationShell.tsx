@@ -3,7 +3,7 @@
 import { useRouter, usePathname } from "next/navigation";
 import Image from "next/image";
 import styled from "styled-components";
-import { DonationProvider, useDonation } from "./DonationContext";
+import { DonationProvider, useDonationForm } from "./DonationContext";
 import Stepper from "../Stepper";
 import Footer from "../Footer";
 import { Button } from "../ui";
@@ -91,14 +91,14 @@ function DonationChrome({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const pathname = usePathname();
   const step = pathToStep(pathname);
-  const { data } = useDonation();
+  const { getValues } = useDonationForm();
 
   const back = () => router.push(STEP_PATHS[Math.max(0, step - 1)]);
   const next = () => router.push(STEP_PATHS[Math.min(2, step + 1)]);
 
   const submit = () => {
     // TODO: POST https://frontend-assignment-api.goodrequest.dev
-    console.log("Odosielam formulár:", data);
+    console.log("Odosielam formulár:", getValues());
   };
 
   return (

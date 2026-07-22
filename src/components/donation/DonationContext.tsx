@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState } from "react";
+import { FormProvider, useForm, useFormContext } from "react-hook-form";
 
 export const SHELTERS = [
   "Mestský útulok, Žilina",
@@ -36,30 +36,16 @@ export const initialData: FormData = {
   gdpr: false,
 };
 
-type DonationContextValue = {
-  data: FormData;
-  set: <K extends keyof FormData>(key: K, value: FormData[K]) => void;
-};
-
-const DonationContext = createContext<DonationContextValue | null>(null);
-
 export function DonationProvider({ children }: { children: React.ReactNode }) {
-  const [data, setData] = useState<FormData>(initialData);
+  const methods = useForm<FormData>({ defaultValues: initialData });
 
-  const set = <K extends keyof FormData>(key: K, value: FormData[K]) =>
-    setData((d) => ({ ...d, [key]: value }));
-
-  return (
-    <DonationContext.Provider value={{ data, set }}>
-      {children}
-    </DonationContext.Provider>
-  );
+  return <FormProvider {...methods}>{children}</FormProvider>;
 }
 
-export function useDonation() {
-  const ctx = useContext(DonationContext);
+export function useDonationForm() {
+  const ctx = useFormContext<FormData>();
   if (!ctx) {
-    throw new Error("useDonation must be used within DonationProvider");
+    throw new Error("useDonationForm must be used within DonationProvider");
   }
   return ctx;
 }

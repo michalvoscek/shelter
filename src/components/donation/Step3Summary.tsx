@@ -2,7 +2,7 @@
 
 import styled from "styled-components";
 import { Checkbox } from "../ui";
-import { useDonation } from "../donation/DonationContext";
+import { useDonationForm } from "../donation/DonationContext";
 import {
   Heading,
   Section,
@@ -35,7 +35,8 @@ const SummaryRow = styled.div`
 `;
 
 export default function Step3Summary() {
-  const { data, set } = useDonation();
+  const { register, watch } = useDonationForm();
+  const data = watch();
 
   return (
     <>
@@ -79,10 +80,7 @@ export default function Step3Summary() {
           </SummaryRow>
         </SummaryList>
         <Divider />
-        <Checkbox
-          checked={data.gdpr}
-          onChange={(e) => set("gdpr", e.target.checked)}
-        >
+        <Checkbox {...register("gdpr")}>
           Súhlasím so spracovaním mojich osobných údajov
         </Checkbox>
       </Section>

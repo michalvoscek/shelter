@@ -4,7 +4,7 @@ import { useState } from "react";
 import styled from "styled-components";
 import { Field, Input } from "../ui";
 import { CzechFlag, SlovakFlag, ChevronDownIcon } from "../icons";
-import { useDonation } from "../donation/DonationContext";
+import { useDonationForm } from "../donation/DonationContext";
 import { Heading, Section, SectionTitle } from "../donation/DonationShell";
 
 const NameGrid = styled.div`
@@ -93,7 +93,8 @@ const PrefixWrap = styled.div`
 `;
 
 export default function Step2Details() {
-  const { data, set } = useDonation();
+  const { register, watch, setValue } = useDonationForm();
+  const phonePrefix = watch("phonePrefix");
   const [prefixOpen, setPrefixOpen] = useState(false);
 
   return (
@@ -111,16 +112,14 @@ export default function Step2Details() {
             Meno
             <Input
               placeholder="Zadajte Vaše meno"
-              value={data.firstName}
-              onChange={(e) => set("firstName", e.target.value)}
+              {...register("firstName")}
             />
           </Field>
           <Field>
             Priezvisko
             <Input
               placeholder="Zadajte Vaše priezvisko"
-              value={data.lastName}
-              onChange={(e) => set("lastName", e.target.value)}
+              {...register("lastName")}
             />
           </Field>
         </NameGrid>
@@ -129,8 +128,7 @@ export default function Step2Details() {
           <Input
             type="email"
             placeholder="Zadajte Váš e-mail"
-            value={data.email}
-            onChange={(e) => set("email", e.target.value)}
+            {...register("email")}
           />
         </Field>
         <Field>
@@ -142,7 +140,7 @@ export default function Step2Details() {
                 aria-label="Predvoľba krajiny"
                 onClick={() => setPrefixOpen((o) => !o)}
               >
-                {data.phonePrefix === "+421" ? (
+                {phonePrefix === "+421" ? (
                   <SlovakFlag size={22} />
                 ) : (
                   <CzechFlag size={22} />
@@ -154,7 +152,7 @@ export default function Step2Details() {
                   <button
                     type="button"
                     onClick={() => {
-                      set("phonePrefix", "+421");
+                      setValue("phonePrefix", "+421");
                       setPrefixOpen(false);
                     }}
                   >
@@ -163,7 +161,7 @@ export default function Step2Details() {
                   <button
                     type="button"
                     onClick={() => {
-                      set("phonePrefix", "+420");
+                      setValue("phonePrefix", "+420");
                       setPrefixOpen(false);
                     }}
                   >
@@ -175,8 +173,7 @@ export default function Step2Details() {
             <input
               type="tel"
               placeholder="+ 420 123 321 123"
-              value={data.phone}
-              onChange={(e) => set("phone", e.target.value)}
+              {...register("phone")}
             />
           </PhoneRow>
         </Field>
