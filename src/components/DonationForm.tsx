@@ -52,19 +52,19 @@ const Layout = styled.main`
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(320px, 42%);
   gap: 48px;
-  padding: 48px 40px 40px 110px;
+  padding: 24px 40px 24px 110px;
   min-height: 100dvh;
 
   @media (max-width: 960px) {
     grid-template-columns: 1fr;
-    padding: 32px 24px;
+    padding: 20px 24px;
   }
 `;
 
 const Column = styled.div`
   display: flex;
   flex-direction: column;
-  gap: 48px;
+  gap: 24px;
   max-width: 912px;
   width: 100%;
 `;
@@ -89,7 +89,7 @@ const DogPanel = styled.aside`
 `;
 
 const Heading = styled.h1`
-  font-size: 56px;
+  font-size: 48px;
   font-weight: 800;
   line-height: 1.08;
   letter-spacing: -0.02em;
@@ -98,7 +98,7 @@ const Heading = styled.h1`
 const Section = styled.section`
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 16px;
 `;
 
 const SectionTitle = styled.h2`
@@ -116,7 +116,7 @@ const ModeToggle = styled.div`
 
 const ModeButton = styled.button<{ $active: boolean }>`
   flex: 1;
-  padding: 18px 16px;
+  padding: 14px 16px;
   border-radius: 6px;
   font-size: 16px;
   font-weight: 600;
@@ -145,7 +145,7 @@ const AmountInputRow = styled.div`
   justify-content: center;
   gap: 12px;
   width: 200px;
-  margin: 24px auto 0;
+  margin: 16px auto 0;
   padding-bottom: 8px;
   border-bottom: 2px solid var(--primary);
 
@@ -155,7 +155,7 @@ const AmountInputRow = styled.div`
     background: none;
     outline: none;
     text-align: right;
-    font-size: 56px;
+    font-size: 44px;
     font-weight: 300;
     color: var(--text);
     padding: 0;
@@ -168,16 +168,16 @@ const AmountInputRow = styled.div`
 
 const AmountDivider = styled.span`
   width: 1px;
-  height: 44px;
+  height: 36px;
   background: var(--text);
   margin-bottom: 8px;
 `;
 
 const AmountCurrency = styled.span`
-  font-size: 24px;
+  font-size: 22px;
   font-weight: 500;
   color: var(--text-secondary);
-  padding-bottom: 12px;
+  padding-bottom: 10px;
 `;
 
 const Chips = styled.div`
@@ -189,7 +189,7 @@ const Chips = styled.div`
 const Chip = styled.button<{ $active: boolean }>`
   flex: 1 1 0;
   min-width: 96px;
-  padding: 20px 12px;
+  padding: 14px 12px;
   border-radius: 8px;
   font-size: 16px;
   font-weight: 600;
@@ -217,13 +217,13 @@ const Actions = styled.div`
   justify-content: space-between;
   align-items: center;
   margin-top: auto;
-  padding-top: 24px;
+  padding-top: 16px;
 `;
 
 const NameGrid = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 24px;
+  gap: 16px;
 
   @media (max-width: 640px) {
     grid-template-columns: 1fr;
@@ -315,7 +315,7 @@ const SummaryRow = styled.div`
   justify-content: space-between;
   align-items: baseline;
   gap: 24px;
-  padding: 18px 0;
+  padding: 14px 0;
 
   dt {
     color: var(--text-secondary);
