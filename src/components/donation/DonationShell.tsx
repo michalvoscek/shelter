@@ -4,6 +4,9 @@ import Image from "next/image";
 import styled from "styled-components";
 import { DonationProvider, useDonationForm } from "./DonationContext";
 import { useStepNavigation, STEP_FIELDS } from "../../hooks/useStepNavigation";
+import Step1Amount from "./Step1Amount";
+import Step2Details from "./Step2Details";
+import Step3Summary from "./Step3Summary";
 import Stepper from "../Stepper";
 import Footer from "../Footer";
 import { Button } from "../ui";
@@ -80,7 +83,7 @@ const Actions = styled.div`
   padding-top: 16px;
 `;
 
-function DonationChrome({ children }: { children: React.ReactNode }) {
+function DonationChrome() {
   const { goToStep, goForward, goBack, step } = useStepNavigation();
   const { handleSubmit } = useDonationForm();
 
@@ -104,7 +107,7 @@ function DonationChrome({ children }: { children: React.ReactNode }) {
       <Column>
         <Stepper />
 
-        {children}
+        {step === 0 ? <Step1Amount /> : step === 1 ? <Step2Details /> : <Step3Summary />}
 
         <Actions>
           <Button
@@ -140,14 +143,10 @@ function DonationChrome({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function DonationShell({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function DonationShell() {
   return (
     <DonationProvider>
-      <DonationChrome>{children}</DonationChrome>
+      <DonationChrome />
     </DonationProvider>
   );
 }
