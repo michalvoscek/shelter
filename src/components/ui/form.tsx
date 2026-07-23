@@ -2,6 +2,16 @@
 
 import styled from "styled-components";
 
+export const NameGrid = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+`;
+
 export const Field = styled.label`
   display: flex;
   flex-direction: column;
