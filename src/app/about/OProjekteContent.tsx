@@ -67,6 +67,8 @@ export default function OProjekteContent() {
       fetch(
         "https://frontend-assignment-api.goodrequest.dev/api/v1/shelters/results",
       ).then((res) => res.json()),
+    refetchOnMount: "always",
+    gcTime: 0,
   });
 
   return (
