@@ -1,16 +1,23 @@
 "use client";
 
 import Image from "next/image";
+import { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { DonationProvider, useDonationForm } from "./DonationContext";
 import { useStepNavigation, STEP_FIELDS } from "../../hooks/useStepNavigation";
+import {
+  useSubmitDonation,
+  SubmissionError,
+  type ApiMessage,
+  type SubmitDonationPayload,
+} from "../../hooks/useSubmitDonation";
 import Step1Amount from "./Step1Amount";
 import Step2Details from "./Step2Details";
 import Step3Summary from "./Step3Summary";
 import Stepper from "../Stepper";
 import Footer from "../Footer";
 import { Button } from "../ui";
-import { ArrowLeftIcon, ArrowRightIcon } from "../icons";
+import { ArrowLeftIcon, ArrowRightIcon, CloseIcon } from "../icons";
 
 export const Layout = styled.main`
   display: grid;
@@ -89,15 +96,128 @@ const Actions = styled.div`
   padding-top: 16px;
 `;
 
+const AlertWrap = styled.section<{ $variant: "error" | "success" }>`
+  border-radius: 12px;
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid
+    ${({ $variant }) => ($variant === "error" ? "var(--danger)" : "var(--success)")};
+  background: ${({ $variant }) =>
+    $variant === "error" ? "var(--danger-light)" : "var(--success-light)"};
+`;
+
+const AlertHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 12px;
+`;
+
+const AlertHeading = styled.h2`
+  font-size: 18px;
+  font-weight: 700;
+
+  &:focus {
+    outline: none;
+  }
+`;
+
+const CloseButton = styled.button`
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  color: var(--text);
+
+  &:hover {
+    background: rgba(17, 24, 39, 0.08);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--text);
+    outline-offset: 2px;
+  }
+`;
+
+const AlertList = styled.ul`
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-left: 20px;
+  font-size: 15px;
+  line-height: 1.4;
+`;
+
+function SubmitAlert({
+  status,
+  messages,
+  onRetry,
+  onClose,
+}: {
+  status: "error" | "success";
+  messages: ApiMessage[];
+  onRetry: () => void;
+  onClose: () => void;
+}) {
+  const headingRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    headingRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+    headingRef.current?.focus();
+  }, []);
+
+  return (
+    <AlertWrap
+      $variant={status}
+      role={status === "error" ? "alert" : "status"}
+      aria-live={status === "error" ? "assertive" : "polite"}
+    >
+      <AlertHeader>
+        <AlertHeading ref={headingRef} tabIndex={-1}>
+          {status === "error"
+            ? "Formulár sa nepodarilo odoslať"
+            : "Príspevok bol úspešne zaznamenaný"}
+        </AlertHeading>
+        <CloseButton type="button" aria-label="Zavrieť oznámenie" onClick={onClose}>
+          <CloseIcon size={18} />
+        </CloseButton>
+      </AlertHeader>
+      <AlertList>
+        {messages.map((m, i) => (
+          <li key={i}>{m.message}</li>
+        ))}
+      </AlertList>
+      {status === "error" && <Button onClick={onRetry}>Skúsiť znova</Button>}
+    </AlertWrap>
+  );
+}
+
 function DonationChrome() {
   const { goToStep, goForward, goBack, step } = useStepNavigation();
   const { handleSubmit } = useDonationForm();
+  const mutation = useSubmitDonation();
 
   const submit = handleSubmit(
     (data) => {
-      // TODO: POST https://frontend-assignment-api.goodrequest.dev
-      const phone = `${data.phonePrefix} ${data.phone}`;
-      console.log("Odosielam formulár:", { ...data, phone });
+      const payload: SubmitDonationPayload = {
+        contributors: [
+          {
+            firstName: data.firstName,
+            lastName: data.lastName,
+            email: data.email,
+            phone: `${data.phonePrefix} ${data.phone}`,
+          },
+        ],
+        shelterID: data.mode === "shelter" ? data.shelterID : null,
+        value: Number(data.amount),
+      };
+      mutation.reset();
+      mutation.mutate(payload);
     },
     (errors) => {
       const invalidStep = STEP_FIELDS.findIndex((fields) =>
@@ -109,10 +229,30 @@ function DonationChrome() {
     },
   );
 
+  const errorMessages =
+    mutation.error instanceof SubmissionError ? mutation.error.messages : [];
+
   return (
     <Layout>
       <Column>
         <Stepper />
+
+        {mutation.isError && (
+          <SubmitAlert
+            status="error"
+            messages={errorMessages}
+            onRetry={submit}
+            onClose={mutation.reset}
+          />
+        )}
+        {mutation.isSuccess && mutation.data && (
+          <SubmitAlert
+            status="success"
+            messages={mutation.data}
+            onRetry={submit}
+            onClose={mutation.reset}
+          />
+        )}
 
         {step === 0 ? <Step1Amount /> : step === 1 ? <Step2Details /> : <Step3Summary />}
 
@@ -130,7 +270,9 @@ function DonationChrome() {
               Pokračovať <ArrowRightIcon size={20} />
             </Button>
           ) : (
-            <Button onClick={submit}>Odoslať formulár</Button>
+            <Button onClick={submit} disabled={mutation.isPending}>
+              {mutation.isPending ? "Odosielam…" : "Odoslať formulár"}
+            </Button>
           )}
         </Actions>
 

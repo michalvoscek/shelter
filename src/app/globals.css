@@ -10,6 +10,9 @@
   --border: #e5e7eb;
   --white: #ffffff;
   --danger: #dc2626;
+  --success: #16a34a;
+  --success-light: #dcfce7;
+  --danger-light: #fee2e2;
 }
 
 * {
