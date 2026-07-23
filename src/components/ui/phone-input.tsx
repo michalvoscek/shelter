@@ -1,6 +1,11 @@
 "use client";
 
+import { useState } from "react";
 import styled from "styled-components";
+import { useFormContext } from "react-hook-form";
+import { CZ, SK } from "country-flag-icons/react/3x2";
+import { ChevronDownIcon } from "../icons";
+import { FieldError } from "./form";
 
 export const PhoneRow = styled.div`
   display: flex;
@@ -96,3 +101,75 @@ export const PrefixVisual = styled.span`
   pointer-events: none;
   z-index: 1;
 `;
+
+interface PhoneFieldProps {
+  prefixName?: string;
+  phoneName?: string;
+}
+
+export function PhoneField({
+  prefixName = "phonePrefix",
+  phoneName = "phone",
+}: PhoneFieldProps) {
+  const { register, watch, setValue, formState } = useFormContext();
+  const phonePrefix = watch(prefixName) as string;
+  const [prefixOpen, setPrefixOpen] = useState(false);
+
+  const stripPhonePrefix = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const match = e.target.value.match(/^\s*(\+421|\+420)[\s ]*/);
+    if (!match) return;
+    const rest = e.target.value.slice(match[0].length);
+    setValue(prefixName, match[1] as "+421" | "+420");
+    setValue(phoneName, rest);
+    e.target.value = rest;
+  };
+
+  const changePrefix = (prefix: "+421" | "+420") => {
+    if (prefix !== phonePrefix) {
+      setValue(phoneName, "");
+    }
+    setValue(prefixName, prefix);
+    setPrefixOpen(false);
+  };
+
+  return (
+    <>
+      <PhoneRow>
+        <PrefixWrap>
+          <PrefixButton
+            type="button"
+            aria-label="Predvoľba krajiny"
+            onClick={() => setPrefixOpen((o) => !o)}
+          >
+            {phonePrefix === "+421" ? (
+              <SK title="Slovensko" style={{ width: 22 }} />
+            ) : (
+              <CZ title="Česko" style={{ width: 22 }} />
+            )}
+            <ChevronDownIcon size={16} />
+          </PrefixButton>
+          {prefixOpen && (
+            <PrefixMenu>
+              <button type="button" onClick={() => changePrefix("+421")}>
+                <SK title="Slovensko" style={{ width: 22 }} /> +421
+              </button>
+              <button type="button" onClick={() => changePrefix("+420")}>
+                <CZ title="Česko" style={{ width: 22 }} /> +420
+              </button>
+            </PrefixMenu>
+          )}
+        </PrefixWrap>
+        <PhoneInputWrap>
+          <PrefixVisual>{phonePrefix}</PrefixVisual>
+          <input
+            type="tel"
+            placeholder="123 321 123"
+            aria-invalid={!!formState.errors[phoneName]}
+            {...register(phoneName, { onChange: stripPhonePrefix })}
+          />
+        </PhoneInputWrap>
+      </PhoneRow>
+      <FieldError error={formState.errors[phoneName]} />
+    </>
+  );
+}
