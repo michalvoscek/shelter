@@ -83,7 +83,7 @@ export default function Step3Summary() {
           </SummaryRow>
           <SummaryRow>
             <dt>Telefónne číslo</dt>
-            <dd>{data.phone || "—"}</dd>
+            <dd>{data.phone ? `${data.phonePrefix} ${data.phone}` : "—"}</dd>
           </SummaryRow>
         </SummaryList>
         <Divider />

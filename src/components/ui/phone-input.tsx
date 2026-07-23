@@ -76,3 +76,23 @@ export const PrefixMenu = styled.div`
 export const PrefixWrap = styled.div`
   position: relative;
 `;
+
+export const PhoneInputWrap = styled.div`
+  position: relative;
+  flex: 1;
+
+  input {
+    padding-left: 56px;
+  }
+`;
+
+export const PrefixVisual = styled.span`
+  position: absolute;
+  left: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text);
+  font-size: 16px;
+  pointer-events: none;
+  z-index: 1;
+`;

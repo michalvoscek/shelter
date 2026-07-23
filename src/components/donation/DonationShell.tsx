@@ -96,7 +96,8 @@ function DonationChrome() {
   const submit = handleSubmit(
     (data) => {
       // TODO: POST https://frontend-assignment-api.goodrequest.dev
-      console.log("Odosielam formulár:", data);
+      const phone = `${data.phonePrefix} ${data.phone}`;
+      console.log("Odosielam formulár:", { ...data, phone });
     },
     (errors) => {
       const invalidStep = STEP_FIELDS.findIndex((fields) =>
