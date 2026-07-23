@@ -66,7 +66,11 @@ export default function Step3Summary() {
           </SummaryRow>
           <SummaryRow>
             <dt>Suma príspevku</dt>
-            <dd>{data.amount ? `${data.amount} €` : "—"}</dd>
+            <dd>
+              {data.amount
+                ? `${Number(data.amount).toLocaleString("sk-SK", { maximumFractionDigits: 2 })} €`
+                : "—"}
+            </dd>
           </SummaryRow>
         </SummaryList>
         <Divider />

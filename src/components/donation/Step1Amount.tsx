@@ -1,6 +1,7 @@
 "use client";
 
 import styled, { css } from "styled-components";
+import { NumericFormat } from "react-number-format";
 import { FieldError, Field } from "../ui";
 import {
   PRESET_AMOUNTS,
@@ -175,15 +176,18 @@ export default function Step1Amount() {
       <Section>
         <SectionTitle>Suma, ktorou chcem prispieť</SectionTitle>
         <AmountInputRow>
-          <input
-            type="text"
-            inputMode="numeric"
+          <NumericFormat
+            inputMode="decimal"
             aria-label="Suma v eurách"
             aria-invalid={!!errors.amount}
             placeholder="0"
+            thousandSeparator=" "
+            decimalSeparator=","
+            decimalScale={2}
+            allowNegative={false}
             value={amount}
-            onChange={(e) =>
-              setValue("amount", e.target.value.replace(/[^0-9]/g, ""), {
+            onValueChange={(values) =>
+              setValue("amount", values.value, {
                 shouldValidate: true,
               })
             }
