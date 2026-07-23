@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import styled from "styled-components";
-import { ErrorText, Field, Input } from "../ui";
+import { FieldError, Field, Input } from "../ui";
 import { CZ, SK } from "country-flag-icons/react/3x2";
 import { ChevronDownIcon } from "../icons";
 import { useDonationForm } from "../donation/DonationContext";
@@ -121,9 +121,7 @@ export default function Step2Details() {
               aria-invalid={!!errors.firstName}
               {...register("firstName")}
             />
-            {errors.firstName && (
-              <ErrorText role="alert">{errors.firstName.message}</ErrorText>
-            )}
+            <FieldError error={errors.firstName} />
           </Field>
           <Field>
             Priezvisko
@@ -132,9 +130,7 @@ export default function Step2Details() {
               aria-invalid={!!errors.lastName}
               {...register("lastName")}
             />
-            {errors.lastName && (
-              <ErrorText role="alert">{errors.lastName.message}</ErrorText>
-            )}
+            <FieldError error={errors.lastName} />
           </Field>
         </NameGrid>
         <Field>
@@ -145,9 +141,7 @@ export default function Step2Details() {
             aria-invalid={!!errors.email}
             {...register("email")}
           />
-          {errors.email && (
-            <ErrorText role="alert">{errors.email.message}</ErrorText>
-          )}
+          <FieldError error={errors.email} />
         </Field>
         <Field>
           Telefónne číslo
@@ -195,9 +189,7 @@ export default function Step2Details() {
               {...register("phone")}
             />
           </PhoneRow>
-          {errors.phone && (
-            <ErrorText role="alert">{errors.phone.message}</ErrorText>
-          )}
+          <FieldError error={errors.phone} />
         </Field>
       </Section>
     </>

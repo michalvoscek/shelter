@@ -1,7 +1,7 @@
 "use client";
 
 import styled, { css } from "styled-components";
-import { ErrorText, Field, Select } from "../ui";
+import { FieldError, Field, Select } from "../ui";
 import {
   PRESET_AMOUNTS,
   SHELTERS,
@@ -108,7 +108,7 @@ const Chip = styled.button<{ $active: boolean }>`
         `}
 `;
 
-const AmountError = styled(ErrorText)`
+const AmountError = styled(FieldError)`
   text-align: center;
 `;
 
@@ -173,9 +173,7 @@ export default function Step1Amount() {
               </option>
             ))}
           </Select>
-          {errors.shelter && (
-            <ErrorText role="alert">{errors.shelter.message}</ErrorText>
-          )}
+          <FieldError error={errors.shelter} />
         </Field>
       </Section>
 
@@ -197,9 +195,7 @@ export default function Step1Amount() {
           />
           <AmountCurrency>€</AmountCurrency>
         </AmountInputRow>
-        {errors.amount && (
-          <AmountError role="alert">{errors.amount.message}</AmountError>
-        )}
+        <AmountError error={errors.amount} />
         <Chips>
           {PRESET_AMOUNTS.map((a) => (
             <Chip

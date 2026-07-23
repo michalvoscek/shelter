@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { Checkbox, ErrorText } from "../ui";
+import { Checkbox, FieldError } from "../ui";
 import { useDonationForm } from "../donation/DonationContext";
 import {
   Heading,
@@ -87,9 +87,7 @@ export default function Step3Summary() {
         <Checkbox aria-invalid={!!errors.gdpr} {...register("gdpr")}>
           Súhlasím so spracovaním mojich osobných údajov
         </Checkbox>
-        {errors.gdpr && (
-          <ErrorText role="alert">{errors.gdpr.message}</ErrorText>
-        )}
+        <FieldError error={errors.gdpr} />
       </Section>
     </>
   );
