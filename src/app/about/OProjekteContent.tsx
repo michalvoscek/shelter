@@ -1,5 +1,6 @@
 "use client";
 
+import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import SubPage from "@/components/SubPage";
 
@@ -54,7 +55,20 @@ const Stat = styled.div`
   }
 `;
 
+type Results = {
+  contributors: number;
+  contribution: number;
+};
+
 export default function OProjekteContent() {
+  const { data, isLoading, isError } = useQuery<Results>({
+    queryKey: ["shelter-results"],
+    queryFn: () =>
+      fetch(
+        "https://frontend-assignment-api.goodrequest.dev/api/v1/shelters/results",
+      ).then((res) => res.json()),
+  });
+
   return (
     <SubPage>
       <Heading>O projekte</Heading>
@@ -71,11 +85,23 @@ export default function OProjekteContent() {
       <Divider />
       <Stats>
         <Stat>
-          <strong>12 200 €</strong>
+          <strong>
+            {isLoading
+              ? "Načítava sa..."
+              : isError
+                ? "Nedostupné"
+                : `${(data!.contribution).toLocaleString("sk-SK", { style: "currency", currency: "EUR" })}`}
+          </strong>
           <span>Celková vyzbieraná hodnota</span>
         </Stat>
         <Stat>
-          <strong>1 028</strong>
+          <strong>
+            {isLoading
+              ? "Načítava sa..."
+              : isError
+                ? "Nedostupné"
+                : data!.contributors.toLocaleString("sk-SK")}
+          </strong>
           <span>Počet darcov</span>
         </Stat>
       </Stats>
