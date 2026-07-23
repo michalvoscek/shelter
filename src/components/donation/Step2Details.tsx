@@ -3,7 +3,8 @@
 import { useState } from "react";
 import styled from "styled-components";
 import { ErrorText, Field, Input } from "../ui";
-import { CzechFlag, SlovakFlag, ChevronDownIcon } from "../icons";
+import { CZ, SK } from "country-flag-icons/react/3x2";
+import { ChevronDownIcon } from "../icons";
 import { useDonationForm } from "../donation/DonationContext";
 import { Heading, Section, SectionTitle } from "../donation/DonationShell";
 
@@ -158,9 +159,9 @@ export default function Step2Details() {
                 onClick={() => setPrefixOpen((o) => !o)}
               >
                 {phonePrefix === "+421" ? (
-                  <SlovakFlag size={22} />
+                  <SK title="Slovensko" style={{ width: 22 }} />
                 ) : (
-                  <CzechFlag size={22} />
+                  <CZ title="Česko" style={{ width: 22 }} />
                 )}
                 <ChevronDownIcon size={16} />
               </PrefixButton>
@@ -173,7 +174,7 @@ export default function Step2Details() {
                       setPrefixOpen(false);
                     }}
                   >
-                    <SlovakFlag size={22} /> +421
+                    <SK title="Slovensko" style={{ width: 22 }} /> +421
                   </button>
                   <button
                     type="button"
@@ -182,7 +183,7 @@ export default function Step2Details() {
                       setPrefixOpen(false);
                     }}
                   >
-                    <CzechFlag size={22} /> +420
+                    <CZ title="Česko" style={{ width: 22 }} /> +420
                   </button>
                 </PrefixMenu>
               )}

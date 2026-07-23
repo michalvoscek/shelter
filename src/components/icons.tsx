@@ -96,35 +96,3 @@ export function InstagramIcon(props: IconProps) {
   );
 }
 
-export function SlovakFlag({ size = 24 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={(size * 2) / 3}
-      viewBox="0 0 24 16"
-      aria-label="Slovensko"
-    >
-      <rect width="24" height="16" rx="2" fill="#ffffff" />
-      <rect y="5.33" width="24" height="5.33" fill="#0b4ea2" />
-      <rect y="10.66" width="24" height="5.34" fill="#ee1c25" />
-      <rect x="4" y="3.5" width="7" height="9" rx="2.5" fill="#ee1c25" stroke="#ffffff" strokeWidth="0.8" />
-      <path d="M6.5 6.2h1.6M7.3 5.4v3.4" stroke="#ffffff" strokeWidth="0.9" />
-      <path d="M5.6 9.6c.6.8 2.8.8 3.4 0" fill="none" stroke="#0b4ea2" strokeWidth="0.9" />
-    </svg>
-  );
-}
-
-export function CzechFlag({ size = 24 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={(size * 2) / 3}
-      viewBox="0 0 24 16"
-      aria-label="Česko"
-    >
-      <rect width="24" height="16" rx="2" fill="#ffffff" />
-      <rect y="8" width="24" height="8" fill="#d7141a" />
-      <path d="M0 0h12L0 16z" fill="#11457e" />
-    </svg>
-  );
-}
