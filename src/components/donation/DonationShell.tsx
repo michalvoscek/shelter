@@ -40,15 +40,21 @@ const DogPanel = styled.aside`
   border-radius: 24px;
   overflow: hidden;
 
-  img {
-    object-fit: cover;
-  }
-
   @media (max-width: 960px) {
     position: relative;
     top: 0;
     height: 320px;
     order: -1;
+  }
+`;
+
+const ImageWrap = styled.div`
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  img {
+    object-fit: cover;
   }
 `;
 
@@ -131,13 +137,15 @@ function DonationChrome() {
       </Column>
 
       <DogPanel>
-        <Image
-          src="/images/dog-portrait.jpg"
-          alt="Šteniatko sediace na pláži"
-          fill
-          priority
-          sizes="(max-width: 960px) 100vw, 42vw"
-        />
+        <ImageWrap>
+          <Image
+            src="/images/dog-portrait.jpg"
+            alt="Šteniatko sediace na pláži"
+            fill
+            priority
+            sizes="(max-width: 960px) 100vw, 42vw"
+          />
+        </ImageWrap>
       </DogPanel>
     </Layout>
   );
