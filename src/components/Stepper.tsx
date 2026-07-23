@@ -1,15 +1,11 @@
 "use client";
 
 import { Fragment } from "react";
-import Link from "next/link";
 import styled, { css } from "styled-components";
 import { CheckIcon } from "./icons";
+import { useStepNavigation } from "../hooks/useStepNavigation";
 
-const STEPS = [
-  { label: "Výber útulku", href: "/" },
-  { label: "Osobné údaje", href: "/personal-data" },
-  { label: "Potvrdenie", href: "/confirmation" },
-];
+const STEPS = [{ label: "Výber útulku" }, { label: "Osobné údaje" }, { label: "Potvrdenie" }];
 
 const Wrapper = styled.ol`
   display: flex;
@@ -40,11 +36,16 @@ const Step = styled.li<{ $state: "done" | "active" | "todo" }>`
         `}
 `;
 
-const StepLink = styled(Link)`
+const StepLink = styled.button`
   display: flex;
   align-items: center;
   gap: 12px;
   color: inherit;
+  background: none;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  padding: 0;
 `;
 
 const Circle = styled.span<{ $state: "done" | "active" | "todo" }>`
@@ -83,19 +84,21 @@ const Circle = styled.span<{ $state: "done" | "active" | "todo" }>`
   }}
 `;
 
-export default function Stepper({ current }: { current: number }) {
+export default function Stepper() {
+  const { goToStep, step: currentStep } = useStepNavigation();
+
   return (
     <Wrapper aria-label="Postup formulára">
       {STEPS.map((step, i) => {
-        const state = i < current ? "done" : i === current ? "active" : "todo";
+        const state = i < currentStep ? "done" : i === currentStep ? "active" : "todo";
         return (
           <Fragment key={step.label}>
             {i > 0 && <Connector aria-hidden />}
             <Step
               $state={state}
-              aria-current={i === current ? "step" : undefined}
+              aria-current={i === currentStep ? "step" : undefined}
             >
-              <StepLink href={step.href}>
+              <StepLink onClick={() => goToStep(i)} type="button">
                 <Circle $state={state}>
                   {state === "done" ? <CheckIcon size={18} /> : i + 1}
                 </Circle>
