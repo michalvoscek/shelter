@@ -5,21 +5,13 @@ import { createContext, useContext, useState } from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
 import { donationSchema, type FormData } from "./donationSchema";
 
-export const SHELTERS = [
-  "Mestský útulok, Žilina",
-  "Útulok Bratislava – Polianky",
-  "Útulok Sloboda zvierat, Bratislava",
-  "Mestský útulok, Košice",
-  "Útulok Prešov",
-];
-
 export const PRESET_AMOUNTS = [5, 10, 20, 30, 50, 100];
 
 export type { FormData };
 
 export const initialData: FormData = {
   mode: "foundation",
-  shelter: "",
+  shelterID: null,
   amount: "50",
   firstName: "",
   lastName: "",

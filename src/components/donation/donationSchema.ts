@@ -30,12 +30,12 @@ const baseFields = {
 export const donationSchema = z.discriminatedUnion("mode", [
   z.object({
     mode: z.literal("shelter"),
-    shelter: z.string().min(1, "Vyberte útulok zo zoznamu"),
+    shelterID: z.number({ message: "Vyberte útulok zo zoznamu" }),
     ...baseFields,
   }),
   z.object({
     mode: z.literal("foundation"),
-    shelter: z.string(),
+    shelterID: z.number().nullable(),
     ...baseFields,
   }),
 ]);

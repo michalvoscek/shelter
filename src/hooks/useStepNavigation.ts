@@ -8,7 +8,7 @@ import {
 import type { FormData } from "../components/donation/DonationContext";
 
 export const STEP_FIELDS: FieldPath<FormData>[][] = [
-  ["shelter", "amount"],
+  ["shelterID", "amount"],
   ["firstName", "lastName", "email", "phone"],
 ];
 

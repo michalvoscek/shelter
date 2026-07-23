@@ -1,13 +1,13 @@
 "use client";
 
 import styled, { css } from "styled-components";
-import { FieldError, Field, Select } from "../ui";
+import { FieldError, Field } from "../ui";
 import {
   PRESET_AMOUNTS,
-  SHELTERS,
   useDonationForm,
 } from "../donation/DonationContext";
 import { Heading, Section, SectionTitle } from "../donation/DonationShell";
+import ShelterCombobox from "./ShelterCombobox";
 
 const ModeToggle = styled.div`
   display: flex;
@@ -114,7 +114,6 @@ const AmountError = styled(FieldError)`
 
 export default function Step1Amount() {
   const {
-    register,
     watch,
     setValue,
     clearErrors,
@@ -122,6 +121,7 @@ export default function Step1Amount() {
   } = useDonationForm();
   const mode = watch("mode");
   const amount = watch("amount");
+  const shelterID = watch("shelterID");
 
   return (
     <>
@@ -146,7 +146,7 @@ export default function Step1Amount() {
           $active={mode === "foundation"}
           onClick={() => {
             setValue("mode", "foundation");
-            clearErrors("shelter");
+            clearErrors("shelterID");
           }}
         >
           Prispieť celej nadácii
@@ -162,18 +162,13 @@ export default function Step1Amount() {
               <span className="optional">(Nepovinné)</span>
             ) : null}
           </span>
-          <Select
+          <ShelterCombobox
+            value={shelterID}
+            onChange={(id) => setValue("shelterID", id, { shouldValidate: true })}
             placeholder="Vyberte útulok zo zoznamu"
-            aria-invalid={!!errors.shelter}
-            {...register("shelter")}
-          >
-            {SHELTERS.map((s) => (
-              <option key={s} value={s}>
-                {s}
-              </option>
-            ))}
-          </Select>
-          <FieldError error={errors.shelter} />
+            error={errors.shelterID}
+          />
+          <FieldError error={errors.shelterID} />
         </Field>
       </Section>
 

@@ -9,6 +9,7 @@ import {
   SectionTitle,
   Divider,
 } from "../donation/DonationShell";
+import { useShelters } from "../../hooks/useShelters";
 
 const SummaryList = styled.dl`
   display: flex;
@@ -41,6 +42,8 @@ export default function Step3Summary() {
     formState: { errors },
   } = useDonationForm();
   const data = watch();
+  const { data: shelters } = useShelters("");
+  const shelterName = shelters?.find((s) => s.id === data.shelterID)?.name;
 
   return (
     <>
@@ -59,7 +62,7 @@ export default function Step3Summary() {
           </SummaryRow>
           <SummaryRow>
             <dt>Útulok</dt>
-            <dd>{data.shelter || "—"}</dd>
+            <dd>{shelterName || "—"}</dd>
           </SummaryRow>
           <SummaryRow>
             <dt>Suma príspevku</dt>
