@@ -7,12 +7,12 @@ import { CZ, SK } from "country-flag-icons/react/3x2";
 import { ChevronDownIcon } from "../icons";
 import { FieldError } from "./form";
 
-export const PhoneRow = styled.div`
+export const PhoneRow = styled.div<{ $hasError: boolean }>`
   display: flex;
   align-items: center;
   gap: 8px;
   background: var(--surface);
-  border: 1px solid transparent;
+  border: 1px solid ${({ $hasError }) => ($hasError ? "var(--danger)" : "transparent")};
   border-radius: 8px;
   padding: 6px;
   transition: border-color 0.15s ease, background-color 0.15s ease;
@@ -115,6 +115,8 @@ export function PhoneField({
   const phonePrefix = watch(prefixName) as string;
   const [prefixOpen, setPrefixOpen] = useState(false);
 
+  const phoneError = !!formState.errors[phoneName];
+
   const stripPhonePrefix = (e: React.ChangeEvent<HTMLInputElement>) => {
     const match = e.target.value.match(/^\s*(\+421|\+420)[\s ]*/);
     if (!match) return;
@@ -134,7 +136,7 @@ export function PhoneField({
 
   return (
     <>
-      <PhoneRow>
+      <PhoneRow $hasError={phoneError}>
         <PrefixWrap>
           <PrefixButton
             type="button"

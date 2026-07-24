@@ -51,9 +51,9 @@ export function FieldError({
   );
 }
 
-export const Input = styled.input`
+export const Input = styled.input<{ $hasError: boolean }>`
   height: 56px;
-  border: 1px solid transparent;
+  border: 1px solid ${({ $hasError }) => ($hasError ? "var(--danger)" : "transparent")};
   border-radius: 8px;
   background: var(--surface);
   padding: 0 16px;

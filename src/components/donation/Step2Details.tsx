@@ -26,6 +26,7 @@ export default function Step2Details() {
             <Input
               placeholder="Zadajte Vaše meno"
               aria-invalid={!!errors.firstName}
+              $hasError={!!errors.firstName}
               {...register("firstName")}
             />
             <FieldError error={errors.firstName} />
@@ -35,6 +36,7 @@ export default function Step2Details() {
             <Input
               placeholder="Zadajte Vaše priezvisko"
               aria-invalid={!!errors.lastName}
+              $hasError={!!errors.lastName}
               {...register("lastName")}
             />
             <FieldError error={errors.lastName} />
@@ -46,6 +48,7 @@ export default function Step2Details() {
             type="email"
             placeholder="Zadajte Váš e-mail"
             aria-invalid={!!errors.email}
+            $hasError={!!errors.email}
             {...register("email")}
           />
           <FieldError error={errors.email} />
