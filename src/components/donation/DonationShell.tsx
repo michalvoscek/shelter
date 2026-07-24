@@ -154,27 +154,13 @@ const AlertList = styled.ul`
   line-height: 1.4;
 `;
 
-const StatusAnnounce = styled.div`
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-`;
-
 function SubmitAlert({
   status,
   messages,
-  onRetry,
   onClose,
 }: {
   status: "error" | "success";
   messages: ApiMessage[];
-  onRetry: () => void;
   onClose: () => void;
 }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
@@ -205,7 +191,6 @@ function SubmitAlert({
           <li key={i}>{m.message}</li>
         ))}
       </AlertList>
-      {status === "error" && <Button onClick={onRetry}>Skúsiť znova</Button>}
     </AlertWrap>
   );
 }
@@ -259,7 +244,6 @@ function DonationChrome() {
           <SubmitAlert
             status="error"
             messages={errorMessages}
-            onRetry={submit}
             onClose={mutation.reset}
           />
         )}
