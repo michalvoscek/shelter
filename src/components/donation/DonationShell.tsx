@@ -214,7 +214,7 @@ function DonationChrome() {
           },
         ],
         shelterID: data.mode === "shelter" ? data.shelterID : null,
-        value: Number(data.amount),
+        value: data.amount,
       };
       mutation.reset();
       mutation.mutate(payload);

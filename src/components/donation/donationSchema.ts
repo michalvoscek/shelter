@@ -2,9 +2,8 @@ import { z } from "zod";
 
 const baseFields = {
   amount: z
-    .string()
-    .min(1, "Zadajte sumu, ktorou chcete prispieť")
-    .refine((value) => Number(value) > 0, "Suma musí byť väčšia ako 0 €"),
+    .number({ message: "Zadajte sumu, ktorou chcete prispieť" })
+    .positive("Suma musí byť väčšia ako 0 €"),
   firstName: z
     .string()
     .min(2, "Meno musí mať 2 až 20 znakov")

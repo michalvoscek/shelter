@@ -12,7 +12,7 @@ export type { FormData };
 export const initialData: FormData = {
   mode: "foundation",
   shelterID: null,
-  amount: "50",
+  amount: 50,
   firstName: "",
   lastName: "",
   email: "",

@@ -187,7 +187,7 @@ export default function Step1Amount() {
             allowNegative={false}
             value={amount}
             onValueChange={(values) =>
-              setValue("amount", values.value, {
+              setValue("amount", values.floatValue as number, {
                 shouldValidate: true,
               })
             }
@@ -199,9 +199,9 @@ export default function Step1Amount() {
           {PRESET_AMOUNTS.map((a) => (
             <Chip
               key={a}
-              $active={amount === String(a)}
+              $active={amount === a}
               onClick={() =>
-                setValue("amount", String(a), { shouldValidate: true })
+                setValue("amount", a, { shouldValidate: true })
               }
             >
               {a} €
