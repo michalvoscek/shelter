@@ -224,7 +224,7 @@ function DonationChrome() {
             firstName: data.firstName,
             lastName: data.lastName,
             email: data.email,
-            phone: `${data.phonePrefix} ${data.phone}`,
+            phone: data.phone,
           },
         ],
         shelterID: data.mode === "shelter" ? data.shelterID : null,

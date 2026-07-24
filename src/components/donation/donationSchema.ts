@@ -14,12 +14,11 @@ const baseFields = {
     .min(2, "Priezvisko musí mať 2 až 30 znakov")
     .max(30, "Priezvisko musí mať 2 až 30 znakov"),
   email: z.email("Zadajte platnú e-mailovú adresu"),
-  phonePrefix: z.enum(["+421", "+420"]),
   phone: z
     .string()
     .regex(
-      /^\d{3}\s?\d{3}\s?\d{3}$/,
-      "Zadajte platné telefónne číslo (9 číslic)",
+      /^\+(421|420) \d{3} \d{3} \d{3}$/,
+      "Zadajte telefónne číslo v medzinárodnom formáte (napr. +421 123 456 789)",
     ),
   gdpr: z
     .boolean()

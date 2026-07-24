@@ -16,8 +16,7 @@ export const initialData: FormData = {
   firstName: "",
   lastName: "",
   email: "",
-  phonePrefix: "+421",
-  phone: "",
+  phone: "+421",
   gdpr: false,
 };
 

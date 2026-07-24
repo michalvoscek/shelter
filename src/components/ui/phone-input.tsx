@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
-import { useFormContext } from "react-hook-form";
+import { useController } from "react-hook-form";
+import { PatternFormat } from "react-number-format";
 import { CZ, SK } from "country-flag-icons/react/3x2";
 import { ChevronDownIcon } from "../icons";
 import { FieldError } from "./form";
@@ -82,56 +83,33 @@ export const PrefixWrap = styled.div`
   position: relative;
 `;
 
-export const PhoneInputWrap = styled.div`
-  position: relative;
-  flex: 1;
-
-  input {
-    padding-left: 56px;
-  }
-`;
-
-export const PrefixVisual = styled.span`
-  position: absolute;
-  left: 12px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: var(--text);
-  font-size: 16px;
-  pointer-events: none;
-  z-index: 1;
-`;
-
 interface PhoneFieldProps {
-  prefixName?: string;
   phoneName?: string;
 }
 
-export function PhoneField({
-  prefixName = "phonePrefix",
-  phoneName = "phone",
-}: PhoneFieldProps) {
-  const { register, watch, setValue, formState } = useFormContext();
-  const phonePrefix = watch(prefixName) as string;
+export function PhoneField({ phoneName = "phone" }: PhoneFieldProps) {
+  const { field, fieldState } = useController({ name: phoneName });
   const [prefixOpen, setPrefixOpen] = useState(false);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const phoneError = !!formState.errors[phoneName];
+  const phoneError = !!fieldState.error;
 
-  const stripPhonePrefix = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const match = e.target.value.match(/^\s*(\+421|\+420)[\s ]*/);
-    if (!match) return;
-    const rest = e.target.value.slice(match[0].length);
-    setValue(prefixName, match[1] as "+421" | "+420");
-    setValue(phoneName, rest);
-    e.target.value = rest;
-  };
+  const flag = field.value?.startsWith("+421")
+    ? "SK"
+    : field.value?.startsWith("+420")
+      ? "CZ"
+      : null;
 
   const changePrefix = (prefix: "+421" | "+420") => {
-    if (prefix !== phonePrefix) {
-      setValue(phoneName, "");
-    }
-    setValue(prefixName, prefix);
+    field.onChange(prefix);
     setPrefixOpen(false);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  const handleValueChange = ({ formattedValue }: { formattedValue: string }) => {
+    field.onChange(formattedValue);
   };
 
   return (
@@ -143,11 +121,8 @@ export function PhoneField({
             aria-label="Predvoľba krajiny"
             onClick={() => setPrefixOpen((o) => !o)}
           >
-            {phonePrefix === "+421" ? (
-              <SK title="Slovensko" style={{ width: 22 }} />
-            ) : (
-              <CZ title="Česko" style={{ width: 22 }} />
-            )}
+            {flag === "SK" && <SK title="Slovensko" style={{ width: 22 }} />}
+            {flag === "CZ" && <CZ title="Česko" style={{ width: 22 }} />}
             <ChevronDownIcon size={16} />
           </PrefixButton>
           {prefixOpen && (
@@ -161,17 +136,24 @@ export function PhoneField({
             </PrefixMenu>
           )}
         </PrefixWrap>
-        <PhoneInputWrap>
-          <PrefixVisual>{phonePrefix}</PrefixVisual>
-          <input
-            type="tel"
-            placeholder="123 321 123"
-            aria-invalid={!!formState.errors[phoneName]}
-            {...register(phoneName, { onChange: stripPhonePrefix })}
-          />
-        </PhoneInputWrap>
+        <PatternFormat
+          format="+### ### ### ###"
+          allowEmptyFormatting
+          value={field.value}
+          onValueChange={handleValueChange}
+          getInputRef={(el: HTMLInputElement | null) => {
+            field.ref(el);
+            inputRef.current = el;
+          }}
+          type="tel"
+          name={field.name}
+          onBlur={field.onBlur}
+          placeholder="+421 123 456 789"
+          aria-invalid={phoneError}
+          autoComplete="tel"
+        />
       </PhoneRow>
-      <FieldError error={formState.errors[phoneName]} />
+      <FieldError error={fieldState.error} />
     </>
   );
 }
