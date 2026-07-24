@@ -43,6 +43,12 @@ const Stat = styled.div`
     font-weight: 600;
     color: var(--text);
   }
+
+  @media (max-width: 640px) {
+    strong {
+      font-size: 40px;
+    }
+  }
 `;
 
 type Results = {

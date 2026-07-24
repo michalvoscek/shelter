@@ -16,6 +16,10 @@ const Card = styled.section`
   gap: 24px;
   max-width: 560px;
   margin: 80px auto 0;
+
+  @media (max-width: 640px) {
+    margin-top: 40px;
+  }
 `;
 
 const IconWrap = styled.div`

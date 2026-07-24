@@ -32,6 +32,15 @@ const SummaryRow = styled.div`
     font-weight: 700;
     text-align: right;
   }
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    gap: 4px;
+
+    dd {
+      text-align: left;
+    }
+  }
 `;
 
 export default function Step3Summary() {

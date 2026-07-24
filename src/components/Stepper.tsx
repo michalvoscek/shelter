@@ -19,6 +19,11 @@ const Connector = styled.li`
   height: 1px;
   background: var(--border);
   margin: 0 16px;
+
+  @media (max-width: 640px) {
+    flex: 1 1 24px;
+    margin: 0 8px;
+  }
 `;
 
 const Step = styled.li<{ $state: "done" | "active" | "todo" }>`
@@ -34,6 +39,14 @@ const Step = styled.li<{ $state: "done" | "active" | "todo" }>`
       : css`
           color: var(--text);
         `}
+
+  @media (max-width: 640px) {
+    white-space: normal;
+
+    span {
+      display: none;
+    }
+  }
 `;
 
 const StepLink = styled.button`
@@ -59,6 +72,12 @@ const Circle = styled.span<{ $state: "done" | "active" | "todo" }>`
   font-size: 16px;
   font-weight: 600;
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+
+  @media (max-width: 640px) {
+    width: 32px;
+    height: 32px;
+    font-size: 14px;
+  }
 
   ${({ $state }) => {
     switch ($state) {

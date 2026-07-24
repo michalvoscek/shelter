@@ -48,7 +48,8 @@ const AmountInputRow = styled.div`
   align-items: flex-end;
   justify-content: center;
   gap: 12px;
-  width: 260px;
+  max-width: 260px;
+  width: 100%;
   margin: 16px auto 0;
   padding-bottom: 8px;
   border-bottom: 2px solid var(--primary);

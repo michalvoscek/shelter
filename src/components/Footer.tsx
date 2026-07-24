@@ -12,12 +12,22 @@ const FooterBar = styled.footer`
   gap: 24px;
   padding-top: 32px;
   border-top: 1px solid var(--border);
+
+  @media (max-width: 640px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
 `;
 
 const Nav = styled.nav`
   display: flex;
   align-items: center;
   gap: 32px;
+
+  @media (max-width: 640px) {
+    gap: 24px;
+  }
 
   a {
     display: inline-flex;
