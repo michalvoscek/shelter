@@ -108,6 +108,7 @@ export default function KontaktContent() {
           src="/images/dog-landscape.jpg"
           alt="Zlatý retriever na pláži pri západe slnka"
           fill
+          loading="eager"
           sizes="(max-width: 960px) 100vw, 1220px"
           style={{ objectFit: "cover" }}
         />
