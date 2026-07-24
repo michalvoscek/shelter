@@ -72,7 +72,7 @@ const Photo = styled.div`
   }
 `;
 
-export default function KontaktContent() {
+export default function ContactContent() {
   return (
     <SubPage title="Kontakt">
       <Cards>

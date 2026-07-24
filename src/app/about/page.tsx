@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import OProjekteContent from "./OProjekteContent";
+import AboutContent from "./AboutContent";
 
 export const metadata: Metadata = {
   title: "O projekte — Good boy",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function OProjektePage() {
-  return <OProjekteContent />;
+  return <AboutContent />;
 }

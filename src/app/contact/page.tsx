@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import KontaktContent from "./KontaktContent";
+import ContactContent from "./ContactContent";
 
 export const metadata: Metadata = {
   title: "Kontakt — Good boy",
@@ -7,5 +7,5 @@ export const metadata: Metadata = {
 };
 
 export default function KontaktPage() {
-  return <KontaktContent />;
+  return <ContactContent />;
 }
