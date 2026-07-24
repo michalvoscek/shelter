@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { useRouter } from "next/navigation";
 import styled from "styled-components";
 import { DonationProvider, useDonationForm } from "./DonationContext";
 import { useStepNavigation, STEP_FIELDS } from "../../hooks/useStepNavigation";
@@ -153,6 +154,18 @@ const AlertList = styled.ul`
   line-height: 1.4;
 `;
 
+const StatusAnnounce = styled.div`
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+`;
+
 function SubmitAlert({
   status,
   messages,
@@ -201,6 +214,7 @@ function DonationChrome() {
   const { goToStep, goForward, goBack, step } = useStepNavigation();
   const { handleSubmit } = useDonationForm();
   const mutation = useSubmitDonation();
+  const router = useRouter();
 
   const submit = handleSubmit(
     (data) => {
@@ -217,7 +231,11 @@ function DonationChrome() {
         value: data.amount,
       };
       mutation.reset();
-      mutation.mutate(payload);
+      mutation.mutate(payload, {
+        onSuccess: () => {
+          router.push("/thank-you");
+        },
+      });
     },
     (errors) => {
       const invalidStep = STEP_FIELDS.findIndex((fields) =>
@@ -245,14 +263,6 @@ function DonationChrome() {
             onClose={mutation.reset}
           />
         )}
-        {mutation.isSuccess && mutation.data && (
-          <SubmitAlert
-            status="success"
-            messages={mutation.data}
-            onRetry={submit}
-            onClose={mutation.reset}
-          />
-        )}
 
         {step === 0 ? <Step1Amount /> : step === 1 ? <Step2Details /> : <Step3Summary />}
 
@@ -270,7 +280,7 @@ function DonationChrome() {
               Pokračovať <ArrowRightIcon size={20} />
             </Button>
           ) : (
-            <Button onClick={submit} disabled={mutation.isPending}>
+            <Button onClick={submit} disabled={mutation.isPending || mutation.isSuccess}>
               {mutation.isPending ? "Odosielam…" : "Odoslať formulár"}
             </Button>
           )}
