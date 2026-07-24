@@ -48,13 +48,13 @@ const AmountInputRow = styled.div`
   align-items: flex-end;
   justify-content: center;
   gap: 12px;
-  width: 200px;
+  width: 260px;
   margin: 16px auto 0;
   padding-bottom: 8px;
   border-bottom: 2px solid var(--primary);
 
   input {
-    width: 110px;
+    width: 160px;
     border: none;
     background: none;
     outline: none;
@@ -177,6 +177,7 @@ export default function Step1Amount() {
         <SectionTitle>Suma, ktorou chcem prispieť</SectionTitle>
         <AmountInputRow>
           <NumericFormat
+            name="amount"
             inputMode="decimal"
             aria-label="Suma v eurách"
             aria-invalid={!!errors.amount}
