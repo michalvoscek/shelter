@@ -2,7 +2,7 @@
 
 import { Field, FieldError, Input, NameGrid, PhoneField } from "../ui";
 import { useDonationForm } from "../donation/DonationContext";
-import { Heading, Section, SectionTitle } from "../donation/DonationShell";
+import { Section, SectionTitle } from "../donation/DonationShell";
 
 export default function Step2Details() {
   const {
@@ -12,12 +12,6 @@ export default function Step2Details() {
 
   return (
     <>
-      <Heading>
-        Potrebujeme od Vás zopár
-        <br />
-        informácií
-      </Heading>
-
       <Section>
         <SectionTitle>O vás</SectionTitle>
         <NameGrid>

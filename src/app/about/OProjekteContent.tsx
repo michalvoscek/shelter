@@ -4,32 +4,22 @@ import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import SubPage from "@/components/SubPage";
 
-const Heading = styled.h1`
-  font-size: 56px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 40px;
-`;
-
 const Paragraph = styled.p`
   max-width: 100%;
   font-size: 17px;
   line-height: 1.65;
   color: var(--text);
-  margin-bottom: 64px;
 `;
 
 const Divider = styled.hr`
   border: none;
   border-top: 1px solid var(--border);
-  margin-bottom: 64px;
 `;
 
 const Stats = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 32px;
-  margin-bottom: 64px;
 
   @media (max-width: 720px) {
     grid-template-columns: 1fr;
@@ -72,8 +62,7 @@ export default function OProjekteContent() {
   });
 
   return (
-    <SubPage>
-      <Heading>O projekte</Heading>
+    <SubPage title="O projekte">
       <Paragraph>
         Nadácia Good Boy sa venuje zlepšovaniu života psov v Žiline na
         Slovensku. Zachraňujeme opustené, týrané a bezdomovské psy,

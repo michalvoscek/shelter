@@ -7,7 +7,7 @@ import {
   PRESET_AMOUNTS,
   useDonationForm,
 } from "../donation/DonationContext";
-import { Heading, Section, SectionTitle } from "../donation/DonationShell";
+import { Section, SectionTitle } from "../donation/DonationShell";
 import ShelterCombobox from "./ShelterCombobox";
 
 const ModeToggle = styled.div`
@@ -126,12 +126,6 @@ export default function Step1Amount() {
 
   return (
     <>
-      <Heading>
-        Vyberte si možnosť, ako
-        <br />
-        chcete pomôcť
-      </Heading>
-
       <ModeToggle role="tablist" aria-label="Forma pomoci">
         <ModeButton
           role="tab"

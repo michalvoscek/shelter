@@ -1,23 +1,10 @@
 "use client";
 
+import type { ReactNode } from "react";
 import Link from "next/link";
 import styled from "styled-components";
-import Footer from "./Footer";
+import PageLayout from "./PageLayout";
 import { ArrowLeftIcon } from "./icons";
-
-const Wrapper = styled.main`
-  display: flex;
-  flex-direction: column;
-  gap: 48px;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 48px 110px 40px;
-  min-height: 100dvh;
-
-  @media (max-width: 960px) {
-    padding: 32px 24px;
-  }
-`;
 
 const BackLink = styled(Link)`
   display: inline-flex;
@@ -33,18 +20,23 @@ const BackLink = styled(Link)`
   }
 `;
 
-const Content = styled.div`
-  flex: 1;
-`;
-
-export default function SubPage({ children }: { children: React.ReactNode }) {
+export default function SubPage({
+  title,
+  children,
+}: {
+  title?: ReactNode;
+  children: ReactNode;
+}) {
   return (
-    <Wrapper>
-      <BackLink href="/">
-        <ArrowLeftIcon size={18} /> Späť
-      </BackLink>
-      <Content>{children}</Content>
-      <Footer />
-    </Wrapper>
+    <PageLayout
+      header={
+        <BackLink href="/">
+          <ArrowLeftIcon size={18} /> Späť
+        </BackLink>
+      }
+      title={title}
+    >
+      {children}
+    </PageLayout>
   );
 }

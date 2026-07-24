@@ -16,30 +16,15 @@ import Step1Amount from "./Step1Amount";
 import Step2Details from "./Step2Details";
 import Step3Summary from "./Step3Summary";
 import Stepper from "../Stepper";
-import Footer from "../Footer";
+import PageLayout from "../PageLayout";
 import { Button } from "../ui";
 import { ArrowLeftIcon, ArrowRightIcon, CloseIcon } from "../icons";
 
-export const Layout = styled.main`
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(320px, 42%);
-  gap: 48px;
-  padding: 24px 40px 24px 110px;
-  min-height: 100dvh;
-
-  @media (max-width: 960px) {
-    grid-template-columns: 1fr;
-    padding: 20px 24px;
-  }
-`;
-
-export const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 24px;
-  max-width: 912px;
-  width: 100%;
-`;
+const STEP_TITLES = [
+  "Vyberte si možnosť, ako chcete pomôcť",
+  "Potrebujeme od Vás zopár informácií",
+  "Skontrolujte si zadané údaje",
+];
 
 const DogPanel = styled.aside`
   position: sticky;
@@ -64,13 +49,6 @@ const ImageWrap = styled.div`
   img {
     object-fit: cover;
   }
-`;
-
-export const Heading = styled.h1`
-  font-size: 48px;
-  font-weight: 800;
-  line-height: 1.08;
-  letter-spacing: -0.02em;
 `;
 
 export const Section = styled.section`
@@ -236,55 +214,53 @@ function DonationChrome() {
     mutation.error instanceof SubmissionError ? mutation.error.messages : [];
 
   return (
-    <Layout>
-      <Column>
-        <Stepper />
+    <PageLayout
+      header={<Stepper />}
+      title={STEP_TITLES[step]}
+      image={
+        <DogPanel>
+          <ImageWrap>
+            <Image
+              src="/images/dog-portrait.jpg"
+              alt="Šteniatko sediace na pláži"
+              fill
+              priority
+              sizes="(max-width: 960px) 100vw, 42vw"
+            />
+          </ImageWrap>
+        </DogPanel>
+      }
+    >
+      {mutation.isError && (
+        <SubmitAlert
+          status="error"
+          messages={errorMessages}
+          onClose={mutation.reset}
+        />
+      )}
 
-        {mutation.isError && (
-          <SubmitAlert
-            status="error"
-            messages={errorMessages}
-            onClose={mutation.reset}
-          />
-        )}
+      {step === 0 ? <Step1Amount /> : step === 1 ? <Step2Details /> : <Step3Summary />}
 
-        {step === 0 ? <Step1Amount /> : step === 1 ? <Step2Details /> : <Step3Summary />}
-
-        <Actions>
-          <Button
-            $variant="secondary"
-            onClick={goBack}
-            disabled={step === 0}
-            aria-label="Späť"
-          >
-            <ArrowLeftIcon size={20} /> Späť
+      <Actions>
+        <Button
+          $variant="secondary"
+          onClick={goBack}
+          disabled={step === 0}
+          aria-label="Späť"
+        >
+          <ArrowLeftIcon size={20} /> Späť
+        </Button>
+        {step < 2 ? (
+          <Button onClick={goForward}>
+            Pokračovať <ArrowRightIcon size={20} />
           </Button>
-          {step < 2 ? (
-            <Button onClick={goForward}>
-              Pokračovať <ArrowRightIcon size={20} />
-            </Button>
-          ) : (
-            <Button onClick={submit} disabled={mutation.isPending || mutation.isSuccess}>
-              {mutation.isPending ? "Odosielam…" : "Odoslať formulár"}
-            </Button>
-          )}
-        </Actions>
-
-        <Footer />
-      </Column>
-
-      <DogPanel>
-        <ImageWrap>
-          <Image
-            src="/images/dog-portrait.jpg"
-            alt="Šteniatko sediace na pláži"
-            fill
-            priority
-            sizes="(max-width: 960px) 100vw, 42vw"
-          />
-        </ImageWrap>
-      </DogPanel>
-    </Layout>
+        ) : (
+          <Button onClick={submit} disabled={mutation.isPending || mutation.isSuccess}>
+            {mutation.isPending ? "Odosielam…" : "Odoslať formulár"}
+          </Button>
+        )}
+      </Actions>
+    </PageLayout>
   );
 }
 

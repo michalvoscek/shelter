@@ -4,7 +4,6 @@ import styled from "styled-components";
 import { Checkbox, FieldError } from "../ui";
 import { useDonationForm } from "../donation/DonationContext";
 import {
-  Heading,
   Section,
   SectionTitle,
   Divider,
@@ -47,8 +46,6 @@ export default function Step3Summary() {
 
   return (
     <>
-      <Heading>Skontrolujte si zadané údaje</Heading>
-
       <Section>
         <SectionTitle>Zhrnutie</SectionTitle>
         <SummaryList>

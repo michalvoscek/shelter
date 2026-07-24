@@ -5,18 +5,10 @@ import styled from "styled-components";
 import SubPage from "@/components/SubPage";
 import { MailIcon, MapPinIcon, PhoneIcon } from "@/components/icons";
 
-const Heading = styled.h1`
-  font-size: 56px;
-  font-weight: 800;
-  letter-spacing: -0.02em;
-  margin-bottom: 96px;
-`;
-
 const Cards = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 32px;
-  margin-bottom: 96px;
 
   @media (max-width: 960px) {
     grid-template-columns: 1fr;
@@ -78,8 +70,7 @@ const Photo = styled.div`
 
 export default function KontaktContent() {
   return (
-    <SubPage>
-      <Heading>Kontakt</Heading>
+    <SubPage title="Kontakt">
       <Cards>
         <Card>
           <IconBadge>
