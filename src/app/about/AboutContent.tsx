@@ -56,7 +56,7 @@ type Results = {
   contribution: number;
 };
 
-export default function AboutContent {
+export default function AboutContent() {
   const { data, isLoading, isError } = useQuery<Results>({
     queryKey: ["shelter-results"],
     queryFn: () =>
