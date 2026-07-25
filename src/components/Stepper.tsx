@@ -10,6 +10,12 @@ const Wrapper = styled.ol`
   align-items: center;
   list-style: none;
   width: 100%;
+
+  @media (max-width: 640px) {
+    .mantine-Stepper-stepLabel {
+      display: none;
+    }
+  }
 `;
 
 export default function Stepper2() {
