@@ -25,6 +25,9 @@ export default function RootLayout({
     <html lang="sk" className={inter.variable} {...mantineHtmlProps}>
       <head><ColorSchemeScript /></head>
       <body>
+        <a href="#main-content" className="skip-link">
+          Preskočiť na hlavný obsah
+        </a>
         <StyledComponentsRegistry>
           <Providers>{children}</Providers>
         </StyledComponentsRegistry>

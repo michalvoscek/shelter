@@ -61,3 +61,36 @@ input, select, textarea {
   font-weight: normal;
   font-size: 100%;
 }
+
+.skip-link {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.skip-link:focus {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  width: auto;
+  height: auto;
+  padding: 12px 20px;
+  margin: 0;
+  overflow: visible;
+  clip: auto;
+  white-space: nowrap;
+  background: var(--primary);
+  color: white;
+  font-weight: 600;
+  font-size: 16px;
+  border-radius: 8px;
+  z-index: 9999;
+  outline: 2px solid var(--white);
+  outline-offset: 2px;
+}
