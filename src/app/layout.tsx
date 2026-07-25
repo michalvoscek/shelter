@@ -23,7 +23,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sk" className={inter.variable} {...mantineHtmlProps}>
-      <head><ColorSchemeScript /></head>
+      <head><ColorSchemeScript suppressHydrationWarning /></head>
       <body>
         <a href="#main-content" className="skip-link">
           Preskočiť na hlavný obsah

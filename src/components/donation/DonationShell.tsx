@@ -1,9 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import styled from "styled-components";
+import { Transition, type MantineTransition } from "@mantine/core";
+import { useReducedMotion } from "@mantine/hooks";
 import { DonationProvider, useDonationForm } from "./DonationContext";
 import { useStepNavigation, STEP_FIELDS } from "../../hooks/useStepNavigation";
 import {
@@ -132,6 +134,32 @@ const AlertList = styled.ul`
   line-height: 1.4;
 `;
 
+const SlideArea = styled.div`
+  position: relative;
+  width: 100%;
+`;
+
+const StepPanel = styled.div<{ $active: boolean }>`
+  ${({ $active }) =>
+    !$active &&
+    `
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    pointer-events: none;
+  `}
+`;
+
+function pickTransition(
+  stepIndex: number,
+  currentStep: number,
+  dir: "forward" | "backward",
+): MantineTransition {
+  if (stepIndex === currentStep) return dir === "forward" ? "slide-left" : "slide-right";
+  return dir === "forward" ? "slide-right" : "slide-left";
+}
+
 function SubmitAlert({
   status,
   messages,
@@ -178,6 +206,28 @@ function DonationChrome() {
   const { handleSubmit } = useDonationForm();
   const mutation = useSubmitDonation();
   const router = useRouter();
+
+  const reducedMotion = useReducedMotion();
+  const slideRef = useRef<HTMLDivElement>(null);
+  const prevStepRef = useRef(step);
+  const [direction, setDirection] = useState<"forward" | "backward">("forward");
+
+  useEffect(() => {
+    if (step > prevStepRef.current) setDirection("forward");
+    else if (step < prevStepRef.current) setDirection("backward");
+    prevStepRef.current = step;
+  }, [step]);
+
+  useEffect(() => {
+    const el = slideRef.current;
+    if (!el) return;
+    const h = el.offsetHeight;
+    el.style.minHeight = `${h}px`;
+    const t = setTimeout(() => {
+      el.style.minHeight = "";
+    }, reducedMotion ? 0 : 300);
+    return () => clearTimeout(t);
+  }, [step, reducedMotion]);
 
   const submit = handleSubmit(
     (data) => {
@@ -239,7 +289,44 @@ function DonationChrome() {
         />
       )}
 
-      {step === 0 ? <Step1Amount /> : step === 1 ? <Step2Details /> : <Step3Summary />}
+      <SlideArea ref={slideRef}>
+        <Transition
+          mounted={step === 0}
+          transition={pickTransition(0, step, direction)}
+          duration={reducedMotion ? 0 : 300}
+          keepMounted
+        >
+          {(styles) => (
+            <StepPanel $active={step === 0} style={styles}>
+              <Step1Amount />
+            </StepPanel>
+          )}
+        </Transition>
+        <Transition
+          mounted={step === 1}
+          transition={pickTransition(1, step, direction)}
+          duration={reducedMotion ? 0 : 300}
+          keepMounted
+        >
+          {(styles) => (
+            <StepPanel $active={step === 1} style={styles}>
+              <Step2Details />
+            </StepPanel>
+          )}
+        </Transition>
+        <Transition
+          mounted={step === 2}
+          transition={pickTransition(2, step, direction)}
+          duration={reducedMotion ? 0 : 300}
+          keepMounted
+        >
+          {(styles) => (
+            <StepPanel $active={step === 2} style={styles}>
+              <Step3Summary />
+            </StepPanel>
+          )}
+        </Transition>
+      </SlideArea>
 
       <Actions>
         <Button
