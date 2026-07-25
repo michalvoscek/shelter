@@ -87,7 +87,7 @@ type ShelterComboboxProps = {
   error?: { message?: string };
 };
 
-export default function ShelterCombobox({
+export function ShelterCombobox({
   value,
   onChange,
   placeholder,

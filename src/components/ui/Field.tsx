@@ -2,16 +2,6 @@
 
 import styled from "styled-components";
 
-export const NameGrid = styled.div`
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-
-  @media (max-width: 640px) {
-    grid-template-columns: 1fr;
-  }
-`;
-
 export const Field = styled.label`
   display: flex;
   flex-direction: column;
@@ -25,31 +15,6 @@ export const Field = styled.label`
     font-weight: 400;
   }
 `;
-
-export const ErrorText = styled.p<{ $visible: boolean }>`
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--danger);
-  visibility: ${({ $visible }) => ($visible ? "visible" : "hidden")};
-`;
-
-export function FieldError({
-  error,
-  className,
-}: {
-  error?: { message?: string };
-  className?: string;
-}) {
-  return (
-    <ErrorText
-      role={error ? "alert" : undefined}
-      $visible={!!error}
-      className={className}
-    >
-      {error?.message || "\u00A0"}
-    </ErrorText>
-  );
-}
 
 export const Input = styled.input<{ $hasError: boolean }>`
   height: 56px;

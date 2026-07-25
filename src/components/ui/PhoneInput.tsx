@@ -6,7 +6,7 @@ import { useController } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
 import { CZ, SK } from "country-flag-icons/react/3x2";
 import { ChevronDownIcon } from "../icons";
-import { FieldError } from "./form";
+import { FieldError } from "./FieldError";
 
 export const PhoneRow = styled.div<{ $hasError: boolean }>`
   display: flex;
