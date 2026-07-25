@@ -97,10 +97,10 @@ export default function Step3Summary() {
           </SummaryRow>
         </SummaryList>
         <Divider />
-        <Checkbox aria-invalid={!!errors.gdpr} {...register("gdpr")}>
+        <Checkbox errorId="gdpr-error" hasError={!!errors.gdpr} {...register("gdpr")}>
           Súhlasím so spracovaním mojich osobných údajov
         </Checkbox>
-        <FieldError error={errors.gdpr} />
+        <FieldError error={errors.gdpr} id="gdpr-error" />
       </Section>
     </>
   );

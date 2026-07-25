@@ -11,13 +11,16 @@ const ErrorText = styled.p<{ $visible: boolean }>`
 
 export function FieldError({
   error,
+  id,
   className,
 }: {
   error?: { message?: string };
+  id: string;
   className?: string;
 }) {
   return (
     <ErrorText
+      id={id}
       role={error ? "alert" : undefined}
       $visible={!!error}
       className={className}

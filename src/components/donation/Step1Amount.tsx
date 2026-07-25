@@ -1,6 +1,6 @@
 "use client";
 
-import { Field, FieldError, ShelterCombobox, ModeToggle, AmountInput } from "../ui";
+import { Field, ShelterCombobox, ModeToggle, AmountInput } from "../ui";
 import { useDonationForm } from "../donation/DonationContext";
 import { Section, SectionTitle } from "../donation/DonationShell";
 
@@ -37,8 +37,8 @@ export default function Step1Amount() {
             onChange={(id) => setValue("shelterID", id, { shouldValidate: true })}
             placeholder="Vyberte útulok zo zoznamu"
             error={errors.shelterID}
+            errorId="shelterID-error"
           />
-          <FieldError error={errors.shelterID} />
         </Field>
       </Section>
 
@@ -48,6 +48,7 @@ export default function Step1Amount() {
           amount={amount}
           onChange={(newAmount) => setValue("amount", newAmount, { shouldValidate: true })}
           error={errors.amount}
+          errorId="amount-error"
         />
       </Section>
     </>

@@ -81,12 +81,14 @@ interface AmountInputProps {
   amount: number | undefined;
   onChange: (amount: number) => void;
   error?: { message?: string };
+  errorId: string;
 }
 
 export function AmountInput({
   amount,
   onChange,
   error,
+  errorId,
 }: AmountInputProps) {
   return (
     <>
@@ -96,6 +98,8 @@ export function AmountInput({
           inputMode="decimal"
           aria-label="Suma v eurách"
           aria-invalid={!!error}
+          aria-describedby={error ? errorId : undefined}
+          aria-errormessage={error ? errorId : undefined}
           placeholder="0"
           thousandSeparator=" "
           decimalSeparator=","
@@ -106,7 +110,7 @@ export function AmountInput({
         />
         <AmountCurrency>€</AmountCurrency>
       </AmountInputRow>
-      <AmountError error={error} />
+      <AmountError error={error} id={errorId} />
       <Chips>
         {PRESET_AMOUNTS.map((a) => (
           <Chip

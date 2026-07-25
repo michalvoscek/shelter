@@ -93,6 +93,7 @@ export function PhoneField({ phoneName = "phone" }: PhoneFieldProps) {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const phoneError = !!fieldState.error;
+  const errorId = `${phoneName}-error`;
 
   const flag = field.value?.startsWith("+421")
     ? "SK"
@@ -150,10 +151,12 @@ export function PhoneField({ phoneName = "phone" }: PhoneFieldProps) {
           onBlur={field.onBlur}
           placeholder="+421 123 456 789"
           aria-invalid={phoneError}
+          aria-describedby={phoneError ? errorId : undefined}
+          aria-errormessage={phoneError ? errorId : undefined}
           autoComplete="tel"
         />
       </PhoneRow>
-      <FieldError error={fieldState.error} />
+      <FieldError error={fieldState.error} id={errorId} />
     </>
   );
 }

@@ -30,21 +30,21 @@ export default function Step2Details() {
             Meno
             <Input
               placeholder="Zadajte Vaše meno"
-              aria-invalid={!!errors.firstName}
+              errorId="firstName-error"
               $hasError={!!errors.firstName}
               {...register("firstName")}
             />
-            <FieldError error={errors.firstName} />
+            <FieldError error={errors.firstName} id="firstName-error" />
           </Field>
           <Field>
             Priezvisko
             <Input
               placeholder="Zadajte Vaše priezvisko"
-              aria-invalid={!!errors.lastName}
+              errorId="lastName-error"
               $hasError={!!errors.lastName}
               {...register("lastName")}
             />
-            <FieldError error={errors.lastName} />
+            <FieldError error={errors.lastName} id="lastName-error" />
           </Field>
         </NameGrid>
         <Field>
@@ -52,11 +52,11 @@ export default function Step2Details() {
           <Input
             type="email"
             placeholder="Zadajte Váš e-mail"
-            aria-invalid={!!errors.email}
+            errorId="email-error"
             $hasError={!!errors.email}
             {...register("email")}
           />
-          <FieldError error={errors.email} />
+          <FieldError error={errors.email} id="email-error" />
         </Field>
         <Field>
           Telefónne číslo

@@ -16,7 +16,7 @@ export const Field = styled.label`
   }
 `;
 
-export const Input = styled.input<{ $hasError: boolean }>`
+const StyledInput = styled.input<{ $hasError: boolean }>`
   height: 56px;
   border: 1px solid ${({ $hasError }) => ($hasError ? "var(--danger)" : "transparent")};
   border-radius: 8px;
@@ -37,3 +37,19 @@ export const Input = styled.input<{ $hasError: boolean }>`
     background: var(--white);
   }
 `;
+
+export function Input({
+  $hasError,
+  errorId,
+  ...props
+}: { $hasError: boolean; errorId: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+  return (
+    <StyledInput
+      $hasError={$hasError}
+      aria-invalid={$hasError || undefined}
+      aria-describedby={$hasError ? errorId : undefined}
+      aria-errormessage={$hasError ? errorId : undefined}
+      {...props}
+    />
+  );
+}

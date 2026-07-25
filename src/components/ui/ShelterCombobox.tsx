@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useShelters, type Shelter } from "../../hooks/useShelters";
 import { ChevronDownIcon } from "../icons";
+import { FieldError } from "./FieldError";
 
 const Wrapper = styled.div`
   position: relative;
@@ -85,6 +86,7 @@ type ShelterComboboxProps = {
   onChange: (id: number | null) => void;
   placeholder: string;
   error?: { message?: string };
+  errorId: string;
 };
 
 export function ShelterCombobox({
@@ -92,6 +94,7 @@ export function ShelterCombobox({
   onChange,
   placeholder,
   error,
+  errorId,
 }: ShelterComboboxProps) {
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -193,6 +196,8 @@ export function ShelterCombobox({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         aria-invalid={!!error}
+        aria-describedby={error ? errorId : undefined}
+        aria-errormessage={error ? errorId : undefined}
         aria-expanded={isOpen}
         aria-autocomplete="list"
         role="combobox"
@@ -228,6 +233,7 @@ export function ShelterCombobox({
             ))}
         </Dropdown>
       )}
+      <FieldError error={error} id={errorId} />
     </Wrapper>
   );
 }

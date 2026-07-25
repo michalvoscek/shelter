@@ -47,13 +47,23 @@ const CheckboxLabel = styled.label`
 
 export function Checkbox({
   children,
+  errorId,
+  hasError,
   ...props
-}: React.InputHTMLAttributes<HTMLInputElement> & {
+}: {
+  errorId: string;
+  hasError: boolean;
   children: React.ReactNode;
-}) {
+} & React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <CheckboxLabel>
-      <input type="checkbox" {...props} />
+      <input
+        type="checkbox"
+        aria-invalid={hasError || undefined}
+        aria-describedby={hasError ? errorId : undefined}
+        aria-errormessage={hasError ? errorId : undefined}
+        {...props}
+      />
       <CheckboxBox>
         <CheckIcon size={14} strokeWidth={3} />
       </CheckboxBox>
