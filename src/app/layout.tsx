@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import StyledComponentsRegistry from "@/lib/registry";
 import Providers from "@/lib/providers";
+import { ColorSchemeScript, mantineHtmlProps } from '@mantine/core';
 import "./globals.css";
+import '@mantine/core/styles.layer.css';
 
 const inter = Inter({
   variable: "--font-inter",
@@ -20,7 +22,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="sk" className={inter.variable}>
+    <html lang="sk" className={inter.variable} {...mantineHtmlProps}>
+      <head><ColorSchemeScript /></head>
       <body>
         <StyledComponentsRegistry>
           <Providers>{children}</Providers>
