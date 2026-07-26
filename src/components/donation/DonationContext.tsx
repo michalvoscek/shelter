@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { createContext, useContext, useState } from "react";
 import { FormProvider, useForm, useFormContext } from "react-hook-form";
-import { donationSchema, type FormData } from "./donationSchema";
+import { donationSchema, type FormData } from "@/lib/donationSchema";
 
 export type { FormData };
 
