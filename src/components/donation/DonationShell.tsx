@@ -36,10 +36,7 @@ const DogPanel = styled.aside`
   overflow: hidden;
 
   @media (max-width: 960px) {
-    position: relative;
-    top: 0;
-    height: 320px;
-    order: -1;
+    display: none;
   }
 `;
 
