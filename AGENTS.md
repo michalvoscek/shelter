@@ -60,6 +60,16 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 ---
 
+## 5. Accessibility First
+
+**All changes must meet WCAG 2.1 Level AA.**
+
+- Every UI change must preserve or improve keyboard navigability, focus management, and screen reader compatibility.
+- Use semantic HTML, proper ARIA roles where needed, and ensure sufficient color contrast.
+- Never ship a change that degrades the accessible experience — this is a hard requirement, not a nice-to-have.
+
+---
+
 **These guidelines are working if:** fewer unnecessary changes in diffs, fewer rewrites due to overcomplication, and clarifying questions come before implementation rather than after mistakes.
 
 <!-- BEGIN:nextjs-agent-rules -->
