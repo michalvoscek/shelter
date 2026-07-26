@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { createPortal } from "react-dom";
 import styled from "styled-components";
 import { CloseIcon } from "../icons";
@@ -93,29 +93,27 @@ export function Toast({
   messages: { message: string }[];
   onClose: () => void;
 }) {
-  const [mounted, setMounted] = useState(false);
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const isMounted = useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
-    setMounted(true);
+    headingRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
+    headingRef.current?.focus();
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
-    headingRef.current?.scrollIntoView({ block: "center", behavior: "smooth" });
-    headingRef.current?.focus();
-  }, [mounted]);
-
-  useEffect(() => {
-    if (!mounted) return;
     const handler = (e: KeyboardEvent) => {
       if (e.key === "Escape") onClose();
     };
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
-  }, [mounted, onClose]);
+  }, [onClose]);
 
-  if (!mounted) return null;
+  if (!isMounted) return null;
 
   return createPortal(
     <ToastContainer>

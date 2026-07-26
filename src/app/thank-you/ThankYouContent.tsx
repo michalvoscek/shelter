@@ -1,12 +1,10 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useRouter } from "next/navigation";
+import { useRef } from "react";
 import Link from "next/link";
 import styled from "styled-components";
 import SubPage from "@/components/SubPage";
 import { CheckIcon } from "@/components/icons";
-import type { ApiMessage } from "@/hooks/useSubmitDonation";
 
 const Card = styled.section`
   display: flex;
@@ -41,17 +39,6 @@ const Heading = styled.h1`
   &:focus {
     outline: none;
   }
-`;
-
-const MessageList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  font-size: 16px;
-  line-height: 1.5;
-  color: var(--text-secondary);
-  list-style: none;
-  padding: 0;
 `;
 
 const AboutLink = styled(Link)`

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import styled from "styled-components";
 import { useShelters, type Shelter } from "../../hooks/useShelters";
 import { ChevronDownIcon } from "../icons";
@@ -104,18 +104,6 @@ export function ShelterCombobox({
   const { data: shelters, isLoading, isError } = useShelters(search);
 
   const currentShelter = shelters?.find((s) => s.id === value);
-
-  useEffect(() => {
-    if (!isOpen && value !== null && currentShelter) {
-      setSearch(currentShelter.name);
-    }
-  }, [value, isOpen, currentShelter]);
-
-  useEffect(() => {
-    if (!isOpen && value === null) {
-      setSearch("");
-    }
-  }, [value, isOpen]);
 
   const open = () => {
     setIsOpen(true);
