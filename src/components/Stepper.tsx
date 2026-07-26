@@ -24,7 +24,7 @@ export default function Stepper2() {
   return (
     <Wrapper aria-label="Postup formulára">
       <Stepper
-        color="violet"
+        color="var(--primary)"
         active={currentStep}
         onStepClick={goToStep}
         styles={{
