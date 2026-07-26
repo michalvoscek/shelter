@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { useController } from "react-hook-form";
 import { PatternFormat } from "react-number-format";
@@ -91,6 +91,18 @@ export function PhoneField({ phoneName = "phone" }: PhoneFieldProps) {
   const { field, fieldState } = useController({ name: phoneName });
   const [prefixOpen, setPrefixOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const prefixWrapRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!prefixOpen) return;
+    const handler = (e: MouseEvent) => {
+      if (prefixWrapRef.current && !prefixWrapRef.current.contains(e.target as Node)) {
+        setPrefixOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [prefixOpen]);
 
   const phoneError = !!fieldState.error;
   const errorId = `${phoneName}-error`;
@@ -116,7 +128,7 @@ export function PhoneField({ phoneName = "phone" }: PhoneFieldProps) {
   return (
     <>
       <PhoneRow $hasError={phoneError}>
-        <PrefixWrap>
+        <PrefixWrap ref={prefixWrapRef}>
           <PrefixButton
             type="button"
             aria-label="Predvoľba krajiny"
