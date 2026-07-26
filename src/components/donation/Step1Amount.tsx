@@ -17,13 +17,12 @@ export default function Step1Amount() {
 
   return (
     <>
-      <ModeToggle
+      <Section>
+        <ModeToggle
         mode={mode}
         onChange={(newMode) => setValue("mode", newMode)}
         onChangeFoundation={() => clearErrors("shelterID")}
       />
-
-      <Section>
         <SectionTitle>O projekte</SectionTitle>
         <Field>
           <span>
