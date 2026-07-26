@@ -31,6 +31,7 @@ body {
 body {
   background: var(--white);
   color: var(--text);
+  scrollbar-gutter: stable;
   font-family: var(--font-inter), Arial, Helvetica, sans-serif;
   line-height: normal;
   font-size: medium;
