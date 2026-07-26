@@ -13,6 +13,8 @@ const ToastContainer = styled.div`
   z-index: 1000;
   width: 100%;
   max-width: 480px;
+  padding: 0 16px;
+  box-sizing: border-box;
 `;
 
 const AlertWrap = styled.section<{ $variant: "error" | "success" }>`
