@@ -77,6 +77,10 @@ const Actions = styled.div`
 const SlideArea = styled.div`
   position: relative;
   width: 100%;
+  min-height: 400px;
+  @media (max-width: 640px) {
+    min-height: 620px;
+  }
 `;
 
 const StepPanel = styled.div<{ $active: boolean }>`
