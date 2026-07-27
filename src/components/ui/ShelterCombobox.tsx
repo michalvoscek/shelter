@@ -248,13 +248,17 @@ export function ShelterCombobox({
       return;
     }
     setIsFocused(false);
+    field.onBlur();
     close();
   };
 
   return (
     <Wrapper ref={containerRef} onBlur={handleBlur}>
       <StyledInput
-        ref={inputRef}
+        ref={(el) => {
+          inputRef.current = el;
+          field.ref(el);
+        }}
         type="text"
         value={isFocused ? search : selectedName}
         onChange={handleInputChange}

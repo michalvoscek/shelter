@@ -102,6 +102,8 @@ export function AmountInput({ name }: AmountInputProps) {
           allowNegative={false}
           value={field.value}
           onValueChange={(values) => field.onChange(values.floatValue as number)}
+          onBlur={field.onBlur}
+          getInputRef={field.ref}
         />
         <AmountCurrency>€</AmountCurrency>
       </AmountInputRow>
