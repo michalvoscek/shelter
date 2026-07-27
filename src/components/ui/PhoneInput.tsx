@@ -25,6 +25,7 @@ export const PhoneRow = styled.div<{ $hasError: boolean }>`
 
   input {
     flex: 1;
+    width: 100%;
     border: none;
     background: none;
     outline: none;
