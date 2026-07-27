@@ -144,7 +144,7 @@ function DonationChrome() {
             phone: data.phone,
           },
         ],
-        shelterID: data.mode === "shelter" ? (data.shelterID?.id ?? null) : null,
+        shelterID: data.shelterID?.id ?? null,
         value: data.amount,
       };
       mutation.reset();
