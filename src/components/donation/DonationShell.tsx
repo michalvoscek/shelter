@@ -85,6 +85,9 @@ const SlideArea = styled.div`
 `;
 
 const StepPanel = styled.div<{ $active: boolean }>`
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
   ${({ $active }) =>
     !$active &&
     `
