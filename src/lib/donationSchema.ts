@@ -25,15 +25,20 @@ const baseFields = {
     .refine((value) => value, "Potvrďte súhlas so spracovaním osobných údajov"),
 };
 
+const shelterObject = z.object({
+  id: z.number(),
+  name: z.string(),
+});
+
 export const donationSchema = z.discriminatedUnion("mode", [
   z.object({
     mode: z.literal("shelter"),
-    shelterID: z.number({ message: "Vyberte útulok zo zoznamu" }),
+    shelterID: shelterObject,
     ...baseFields,
   }),
   z.object({
     mode: z.literal("foundation"),
-    shelterID: z.number().nullable(),
+    shelterID: shelterObject.nullable(),
     ...baseFields,
   }),
 ]);

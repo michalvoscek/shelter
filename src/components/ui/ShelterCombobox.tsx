@@ -100,7 +100,7 @@ export function ShelterCombobox({
 
   const { data: shelters, isLoading, isError } = useShelters(search);
 
-  const currentShelter = shelters?.find((s) => s.id === field.value);
+  const currentShelter = shelters?.find((s) => s.id === field.value?.id);
 
   const open = () => {
     setIsOpen(true);
@@ -115,7 +115,7 @@ export function ShelterCombobox({
   };
 
   const select = (shelter: Shelter) => {
-    field.onChange(shelter.id);
+    field.onChange({ id: shelter.id, name: shelter.name });
     setSearch(shelter.name);
     setIsOpen(false);
   };
@@ -205,7 +205,7 @@ export function ShelterCombobox({
               <Option
                 key={shelter.id}
                 role="option"
-                aria-selected={shelter.id === field.value}
+                aria-selected={shelter.id === field.value?.id}
                 $highlighted={index === highlightedIndex}
                 onMouseDown={(e) => {
                   e.preventDefault();

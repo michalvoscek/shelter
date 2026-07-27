@@ -1,16 +1,14 @@
 "use client";
 
-import type { FieldPath } from "react-hook-form";
 import {
   useDonationForm,
   useDonationStep,
 } from "../components/donation/DonationContext";
-import type { FormData } from "../components/donation/DonationContext";
 
-export const STEP_FIELDS: FieldPath<FormData>[][] = [
+export const STEP_FIELDS = [
   ["shelterID", "amount"],
   ["firstName", "lastName", "email", "phone"],
-];
+] as const;
 
 export function useStepNavigation() {
   const { step, setStep } = useDonationStep();
