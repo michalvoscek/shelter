@@ -32,3 +32,4 @@ npm run dev
 - Mobile-responsive layout with horizontal swipe transitions
 - Toast notifications that scale on hover and dismiss on mouse leave, Escape, or close button click
 
+
