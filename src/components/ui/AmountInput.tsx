@@ -85,7 +85,6 @@ interface AmountInputProps {
 export function AmountInput({ name }: AmountInputProps) {
   const { field, fieldState } = useController({ name });
   const error = fieldState.error;
-  console.log('value', field.value)
   return (
     <>
       <AmountInputRow>
