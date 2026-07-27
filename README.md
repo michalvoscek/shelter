@@ -27,3 +27,7 @@ npm run dev
 - Accessible skip-to-content link and keyboard navigation
 - Mobile-responsive layout with horizontal swipe transitions
 - Toast notifications that scale on hover and dismiss on mouse leave, Escape, or close button click
+
+## Deployment
+
+Deployed to **GitHub Pages** at [michalvoscek.github.io/shelter](https://michalvoscek.github.io/shelter).  
