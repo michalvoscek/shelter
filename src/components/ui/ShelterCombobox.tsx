@@ -1,27 +1,27 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useController } from "react-hook-form";
 import styled from "styled-components";
 import { useShelters, type Shelter } from "../../hooks/useShelters";
-import { ChevronDownIcon } from "../icons";
+import { CheckIcon, ChevronDownIcon, CloseIcon } from "../icons";
 import { FieldError } from "./FieldError";
 
 const Wrapper = styled.div`
   position: relative;
 `;
 
-const StyledInput = styled.input<{ $hasError: boolean }>`
+const StyledInput = styled.input<{ $hasError: boolean; $hasValue: boolean }>`
   height: 56px;
   width: 100%;
   border: 1px solid ${({ $hasError }) => ($hasError ? "var(--danger)" : "transparent")};
   border-radius: 8px;
   background: var(--surface);
-  padding: 0 48px 0 16px;
+  padding: 0 ${({ $hasValue }) => ($hasValue ? "76px" : "48px")} 0 16px;
   font-size: 16px;
   color: var(--text);
   outline: none;
-  cursor: pointer;
+  cursor: text;
 
   &::placeholder {
     color: var(--text-muted);
@@ -36,10 +36,37 @@ const StyledInput = styled.input<{ $hasError: boolean }>`
 const IconWrapper = styled.div`
   position: absolute;
   right: 16px;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 0;
+  height: 56px;
+  display: flex;
+  align-items: center;
   pointer-events: none;
   color: var(--text-secondary);
+`;
+
+const ClearButton = styled.button`
+  position: absolute;
+  right: 44px;
+  top: 0;
+  height: 56px;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+
+  &:hover {
+    color: var(--text);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
 `;
 
 const Dropdown = styled.div`
@@ -57,7 +84,10 @@ const Dropdown = styled.div`
 `;
 
 const Option = styled.button<{ $highlighted: boolean }>`
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
   width: 100%;
   padding: 12px 16px;
   text-align: left;
@@ -95,12 +125,32 @@ export function ShelterCombobox({
   const error = fieldState.error;
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
+  const [isFocused, setIsFocused] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
   const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const justFocusedRef = useRef(false);
 
-  const { data: shelters, isLoading, isError } = useShelters(search);
+  const hasValue = field.value !== null;
+  const selectedName: string = field.value?.name ?? "";
+  // Untouched selected name in the input means "show everything", not a filter.
+  const query = search === selectedName ? "" : search;
+  const { data: shelters, isLoading, isError } = useShelters(query);
 
-  const currentShelter = shelters?.find((s) => s.id === field.value?.id);
+  const items = shelters ?? [];
+  const listboxId = `${name}-listbox`;
+  const activeDescendant =
+    highlightedIndex >= 0 && highlightedIndex < items.length
+      ? `${name}-option-${items[highlightedIndex].id}`
+      : undefined;
+
+  useEffect(() => {
+    if (activeDescendant) {
+      document
+        .getElementById(activeDescendant)
+        ?.scrollIntoView({ block: "nearest" });
+    }
+  }, [activeDescendant]);
 
   const open = () => {
     setIsOpen(true);
@@ -109,9 +159,6 @@ export function ShelterCombobox({
 
   const close = () => {
     setIsOpen(false);
-    if (field.value !== null && currentShelter) {
-      setSearch(currentShelter.name);
-    }
   };
 
   const select = (shelter: Shelter) => {
@@ -120,10 +167,44 @@ export function ShelterCombobox({
     setIsOpen(false);
   };
 
+  const handleClear = () => {
+    // Focus first: the resulting focus event still sees the old value and
+    // pre-fills the search with the selected name, so clearing the search
+    // must happen afterwards to win.
+    inputRef.current?.focus();
+    field.onChange(null);
+    setSearch("");
+    open();
+  };
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearch(e.target.value);
+    const value = e.target.value;
+    setSearch(value);
     if (!isOpen) setIsOpen(true);
     setHighlightedIndex(-1);
+    if (value === "" && hasValue) {
+      field.onChange(null);
+    }
+  };
+
+  const handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+    setIsFocused(true);
+    open();
+    if (hasValue) {
+      // Pre-fill with the selected name and select it, so typing replaces it
+      // and the dropdown opens unfiltered.
+      setSearch(selectedName);
+      justFocusedRef.current = true;
+      e.target.select();
+    }
+  };
+
+  const handleMouseUp = (e: React.MouseEvent<HTMLInputElement>) => {
+    // Keep the select-all from the focus event for the first mouse click.
+    if (justFocusedRef.current) {
+      e.preventDefault();
+      justFocusedRef.current = false;
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -134,8 +215,6 @@ export function ShelterCombobox({
       }
       return;
     }
-
-    const items = shelters ?? [];
 
     switch (e.key) {
       case "ArrowDown":
@@ -158,6 +237,7 @@ export function ShelterCombobox({
         break;
       case "Escape":
         e.preventDefault();
+        if (hasValue) setSearch(selectedName);
         close();
         break;
     }
@@ -167,55 +247,77 @@ export function ShelterCombobox({
     if (containerRef.current?.contains(e.relatedTarget as Node)) {
       return;
     }
+    setIsFocused(false);
     close();
   };
 
   return (
-    <Wrapper ref={containerRef}>
+    <Wrapper ref={containerRef} onBlur={handleBlur}>
       <StyledInput
+        ref={inputRef}
         type="text"
-        value={search}
+        value={isFocused ? search : selectedName}
         onChange={handleInputChange}
-        onFocus={open}
-        onBlur={handleBlur}
+        onFocus={handleFocus}
+        onMouseUp={handleMouseUp}
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
+        autoComplete="off"
         aria-invalid={!!error}
         aria-describedby={error ? `${name}-error` : undefined}
         aria-errormessage={error ? `${name}-error` : undefined}
         aria-expanded={isOpen}
+        aria-controls={listboxId}
+        aria-activedescendant={activeDescendant}
         aria-autocomplete="list"
         role="combobox"
         $hasError={!!error}
+        $hasValue={hasValue}
       />
+      {hasValue && (
+        <ClearButton
+          type="button"
+          aria-label="Zmazať výber"
+          onClick={handleClear}
+        >
+          <CloseIcon size={18} />
+        </ClearButton>
+      )}
       <IconWrapper>
         <ChevronDownIcon size={20} />
       </IconWrapper>
 
       {isOpen && (
-        <Dropdown role="listbox">
+        <Dropdown role="listbox" id={listboxId}>
           {isLoading && <StatusMessage>Načítavam…</StatusMessage>}
           {isError && <ErrorMsg>Chyba pri načítavaní útulkov</ErrorMsg>}
-          {!isLoading && !isError && shelters?.length === 0 && (
+          {!isLoading && !isError && items.length === 0 && (
             <StatusMessage>Nenašiel sa žiadny útulok</StatusMessage>
           )}
           {!isLoading &&
             !isError &&
-            shelters?.map((shelter, index) => (
-              <Option
-                key={shelter.id}
-                role="option"
-                aria-selected={shelter.id === field.value?.id}
-                $highlighted={index === highlightedIndex}
-                onMouseDown={(e) => {
-                  e.preventDefault();
-                  select(shelter);
-                }}
-                onMouseEnter={() => setHighlightedIndex(index)}
-              >
-                {shelter.name}
-              </Option>
-            ))}
+            items.map((shelter, index) => {
+              const isSelected = hasValue && shelter.id === field.value.id;
+              return (
+                <Option
+                  key={shelter.id}
+                  id={`${name}-option-${shelter.id}`}
+                  role="option"
+                  aria-selected={isSelected}
+                  $highlighted={index === highlightedIndex}
+                  onMouseDown={(e) => {
+                    e.preventDefault();
+                    select(shelter);
+                  }}
+                  onMouseEnter={() => setHighlightedIndex(index)}
+                >
+                  {shelter.name}
+                  {isSelected && (
+                    <CheckIcon size={18} color="var(--primary)" />
+                  )}
+                </Option>
+              );
+            })}
         </Dropdown>
       )}
       <FieldError error={error} id={`${name}-error`} />
