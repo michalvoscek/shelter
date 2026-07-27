@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import ThankYouContent from "./ThankYouContent";
 
 export const metadata: Metadata = {
-  title: "Thank you — Good boy",
+  title: "Ďakujeme — Good boy",
   description: "Príspevok bol úspešne zaznamenaný.",
 };
 
