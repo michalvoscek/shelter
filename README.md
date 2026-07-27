@@ -4,7 +4,7 @@ A multi-step donation wizard for a Slovak animal shelter, built with Next.js.
 
 ## Deployment
 
-Deployed to **GitHub Pages** at [michalvoscek.github.io/shelter](https://michalvoscek.github.io/shelter). For this reason whole app has shelter base URL.
+Deployed to **GitHub Pages** at [michalvoscek.github.io/shelter](https://michalvoscek.github.io/shelter). For this reason whole app has `/shelter` base URL.
 
 ## Tech Stack
 
