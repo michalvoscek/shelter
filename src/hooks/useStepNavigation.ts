@@ -28,7 +28,7 @@ export function useStepNavigation() {
 
   const goForward = async () => {
     const fieldsToValidate = STEP_FIELDS.slice(0, step + 1).flat();
-    if (await trigger(fieldsToValidate)) {
+    if (await trigger(fieldsToValidate, {shouldFocus: true})) {
       setStep(step + 1);
     }
   };
