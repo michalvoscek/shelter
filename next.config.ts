@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  output: "export",
+  output: process.env.NODE_ENV === "production" ? "export" : undefined,
   basePath: "/shelter",
   images: {
     loader: "custom",
@@ -12,5 +12,16 @@ const nextConfig: NextConfig = {
   },
   trailingSlash: true,
 };
+
+if (process.env.NODE_ENV !== "production") {
+  nextConfig.redirects = async () => [
+    {
+      source: "/",
+      destination: "/shelter",
+      basePath: false,
+      permanent: false,
+    },
+  ];
+}
 
 export default nextConfig;
