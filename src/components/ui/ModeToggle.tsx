@@ -47,18 +47,18 @@ export function ModeToggle({
   onChangeFoundation,
 }: ModeToggleProps) {
   return (
-    <ModeToggleRoot role="tablist" aria-label="Forma pomoci">
+    <ModeToggleRoot role="radiogroup" aria-label="Forma pomoci">
       <ModeButton
-        role="tab"
-        aria-selected={mode === "shelter"}
+        role="radio"
+        aria-checked={mode === "shelter"}
         $active={mode === "shelter"}
         onClick={() => onChange("shelter")}
       >
         Prispieť konkrétnemu útulku
       </ModeButton>
       <ModeButton
-        role="tab"
-        aria-selected={mode === "foundation"}
+        role="radio"
+        aria-checked={mode === "foundation"}
         $active={mode === "foundation"}
         onClick={() => {
           onChange("foundation");
