@@ -2,6 +2,10 @@
 
 A multi-step donation wizard for a Slovak animal shelter, built with Next.js.
 
+## Deployment
+
+Deployed to **GitHub Pages** at [michalvoscek.github.io/shelter](https://michalvoscek.github.io/shelter). For this reason whole app has shelter base URL.
+
 ## Tech Stack
 
 - **Framework:** Next.js 16 + React 19
@@ -28,6 +32,3 @@ npm run dev
 - Mobile-responsive layout with horizontal swipe transitions
 - Toast notifications that scale on hover and dismiss on mouse leave, Escape, or close button click
 
-## Deployment
-
-Deployed to **GitHub Pages** at [michalvoscek.github.io/shelter](https://michalvoscek.github.io/shelter).  
