@@ -85,6 +85,7 @@ interface AmountInputProps {
 export function AmountInput({ name }: AmountInputProps) {
   const { field, fieldState } = useController({ name });
   const error = fieldState.error;
+  console.log('value', field.value)
   return (
     <>
       <AmountInputRow>
@@ -101,7 +102,9 @@ export function AmountInput({ name }: AmountInputProps) {
           decimalScale={2}
           allowNegative={false}
           value={field.value}
-          onValueChange={(values) => field.onChange(values.floatValue as number)}
+          onValueChange={(values) => {
+            field.onChange(values.floatValue ?? null)
+          }}
           onBlur={field.onBlur}
           getInputRef={field.ref}
         />
