@@ -8,11 +8,11 @@ import { Transition, type MantineTransition } from "@mantine/core";
 import { useReducedMotion } from "@mantine/hooks";
 import { DonationProvider, useDonationForm } from "./DonationContext";
 import { useStepNavigation, STEP_FIELDS } from "../../hooks/useStepNavigation";
+import { useSubmitDonation } from "../../hooks/useSubmitDonation";
 import {
-  useSubmitDonation,
   SubmissionError,
   type SubmitDonationPayload,
-} from "../../hooks/useSubmitDonation";
+} from "@/lib/types/apiTypes";
 import Step1Amount from "./Step1Amount";
 import Step2Details from "./Step2Details";
 import Step3Summary from "./Step3Summary";
