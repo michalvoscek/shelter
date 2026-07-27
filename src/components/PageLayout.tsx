@@ -25,13 +25,17 @@ const Title = styled.h1`
   font-size: 56px;
   font-weight: 800;
   letter-spacing: -0.02em;
+  line-height: 1.2;
+  min-height: 68px;
 
   @media (max-width: 960px) {
     font-size: 48px;
+    min-height: 116px;
   }
 
   @media (max-width: 640px) {
     font-size: 36px;
+    min-height: 130px;
   }
 `;
 
