@@ -1,7 +1,7 @@
 "use client";
 
 import styled from "styled-components";
-import { Checkbox, FieldError } from "../ui";
+import { Checkbox } from "../ui";
 import { useDonationForm } from "../donation/DonationContext";
 import {
   Section,
@@ -44,11 +44,7 @@ const SummaryRow = styled.div`
 `;
 
 export default function Step3Summary() {
-  const {
-    register,
-    watch,
-    formState: { errors },
-  } = useDonationForm();
+  const { watch } = useDonationForm();
   const data = watch();
   const { data: shelters } = useShelters("");
   const shelterName = shelters?.find((s) => s.id === data.shelterID)?.name;
@@ -97,10 +93,9 @@ export default function Step3Summary() {
           </SummaryRow>
         </SummaryList>
         <Divider />
-        <Checkbox errorId="gdpr-error" hasError={!!errors.gdpr} {...register("gdpr")}>
+        <Checkbox name="gdpr">
           Súhlasím so spracovaním mojich osobných údajov
         </Checkbox>
-        <FieldError error={errors.gdpr} id="gdpr-error" />
       </Section>
     </>
   );

@@ -1,5 +1,6 @@
 "use client";
 
+import { useController } from "react-hook-form";
 import styled, { css } from "styled-components";
 import { NumericFormat } from "react-number-format";
 import { FieldError } from "./FieldError";
@@ -78,18 +79,12 @@ const AmountError = styled(FieldError)`
 `;
 
 interface AmountInputProps {
-  amount: number | undefined;
-  onChange: (amount: number) => void;
-  error?: { message?: string };
-  errorId: string;
+  name: string;
 }
 
-export function AmountInput({
-  amount,
-  onChange,
-  error,
-  errorId,
-}: AmountInputProps) {
+export function AmountInput({ name }: AmountInputProps) {
+  const { field, fieldState } = useController({ name });
+  const error = fieldState.error;
   return (
     <>
       <AmountInputRow>
@@ -98,25 +93,25 @@ export function AmountInput({
           inputMode="decimal"
           aria-label="Suma v eurách"
           aria-invalid={!!error}
-          aria-describedby={error ? errorId : undefined}
-          aria-errormessage={error ? errorId : undefined}
+          aria-describedby={error ? `${name}-error` : undefined}
+          aria-errormessage={error ? `${name}-error` : undefined}
           placeholder="0"
           thousandSeparator=" "
           decimalSeparator=","
           decimalScale={2}
           allowNegative={false}
-          value={amount}
-          onValueChange={(values) => onChange(values.floatValue as number)}
+          value={field.value}
+          onValueChange={(values) => field.onChange(values.floatValue as number)}
         />
         <AmountCurrency>€</AmountCurrency>
       </AmountInputRow>
-      <AmountError error={error} id={errorId} />
+      <AmountError error={error} id={`${name}-error`} />
       <Chips>
         {PRESET_AMOUNTS.map((a) => (
           <Chip
             key={a}
-            $active={amount === a}
-            onClick={() => onChange(a)}
+            $active={field.value === a}
+            onClick={() => field.onChange(a)}
           >
             {a} €
           </Chip>

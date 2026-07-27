@@ -1,6 +1,8 @@
 "use client";
 
+import { useController } from "react-hook-form";
 import styled from "styled-components";
+import { FieldError } from "./FieldError";
 
 export const Field = styled.label`
   display: flex;
@@ -39,17 +41,24 @@ const StyledInput = styled.input<{ $hasError: boolean }>`
 `;
 
 export function Input({
-  $hasError,
-  errorId,
+  name,
   ...props
-}: { $hasError: boolean; errorId: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+}: { name: string } & React.InputHTMLAttributes<HTMLInputElement>) {
+  const { field, fieldState } = useController({ name });
+  const hasError = !!fieldState.error;
+  const errorId = `${name}-error`;
+
   return (
-    <StyledInput
-      $hasError={$hasError}
-      aria-invalid={$hasError || undefined}
-      aria-describedby={$hasError ? errorId : undefined}
-      aria-errormessage={$hasError ? errorId : undefined}
-      {...props}
-    />
+    <>
+      <StyledInput
+        $hasError={hasError}
+        aria-invalid={hasError || undefined}
+        aria-describedby={hasError ? errorId : undefined}
+        aria-errormessage={hasError ? errorId : undefined}
+        {...props}
+        {...field}
+      />
+      <FieldError error={fieldState.error} id={errorId} />
+    </>
   );
 }

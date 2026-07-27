@@ -5,24 +5,13 @@ import { useDonationForm } from "../donation/DonationContext";
 import { Section, SectionTitle } from "../donation/DonationShell";
 
 export default function Step1Amount() {
-  const {
-    watch,
-    setValue,
-    clearErrors,
-    formState: { errors },
-  } = useDonationForm();
+  const { watch } = useDonationForm();
   const mode = watch("mode");
-  const amount = watch("amount");
-  const shelterID = watch("shelterID");
 
   return (
     <>
       <Section>
-        <ModeToggle
-        mode={mode}
-        onChange={(newMode) => setValue("mode", newMode)}
-        onChangeFoundation={() => clearErrors("shelterID")}
-      />
+        <ModeToggle name="mode" />
         <SectionTitle>O projekte</SectionTitle>
         <Field>
           <span>
@@ -32,23 +21,15 @@ export default function Step1Amount() {
             ) : null}
           </span>
           <ShelterCombobox
-            value={shelterID}
-            onChange={(id) => setValue("shelterID", id, { shouldValidate: true })}
+            name="shelterID"
             placeholder="Vyberte útulok zo zoznamu"
-            error={errors.shelterID}
-            errorId="shelterID-error"
           />
         </Field>
       </Section>
 
       <Section>
         <SectionTitle>Suma, ktorou chcem prispieť</SectionTitle>
-        <AmountInput
-          amount={amount}
-          onChange={(newAmount) => setValue("amount", newAmount, { shouldValidate: true })}
-          error={errors.amount}
-          errorId="amount-error"
-        />
+        <AmountInput name="amount" />
       </Section>
     </>
   );

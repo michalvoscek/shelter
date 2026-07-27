@@ -1,5 +1,6 @@
 "use client";
 
+import { useController, useFormContext } from "react-hook-form";
 import styled, { css } from "styled-components";
 
 const ModeToggleRoot = styled.div`
@@ -36,33 +37,30 @@ const ModeButton = styled.button<{ $active: boolean }>`
 `;
 
 interface ModeToggleProps {
-  mode: "shelter" | "foundation";
-  onChange: (mode: "shelter" | "foundation") => void;
-  onChangeFoundation?: () => void;
+  name: string;
 }
 
-export function ModeToggle({
-  mode,
-  onChange,
-  onChangeFoundation,
-}: ModeToggleProps) {
+export function ModeToggle({ name }: ModeToggleProps) {
+  const { field } = useController({ name });
+  const { clearErrors } = useFormContext();
+
   return (
     <ModeToggleRoot role="radiogroup" aria-label="Forma pomoci">
       <ModeButton
         role="radio"
-        aria-checked={mode === "shelter"}
-        $active={mode === "shelter"}
-        onClick={() => onChange("shelter")}
+        aria-checked={field.value === "shelter"}
+        $active={field.value === "shelter"}
+        onClick={() => field.onChange("shelter")}
       >
         Prispieť konkrétnemu útulku
       </ModeButton>
       <ModeButton
         role="radio"
-        aria-checked={mode === "foundation"}
-        $active={mode === "foundation"}
+        aria-checked={field.value === "foundation"}
+        $active={field.value === "foundation"}
         onClick={() => {
-          onChange("foundation");
-          onChangeFoundation?.();
+          field.onChange("foundation");
+          clearErrors("shelterID");
         }}
       >
         Prispieť celej nadácii

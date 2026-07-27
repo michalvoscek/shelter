@@ -85,11 +85,11 @@ export const PrefixWrap = styled.div`
 `;
 
 interface PhoneFieldProps {
-  phoneName?: string;
+  name: string;
 }
 
-export function PhoneField({ phoneName = "phone" }: PhoneFieldProps) {
-  const { field, fieldState } = useController({ name: phoneName });
+export function PhoneField({ name }: PhoneFieldProps) {
+  const { field, fieldState } = useController({ name });
   const [prefixOpen, setPrefixOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const prefixWrapRef = useRef<HTMLDivElement>(null);
@@ -106,7 +106,7 @@ export function PhoneField({ phoneName = "phone" }: PhoneFieldProps) {
   }, [prefixOpen]);
 
   const phoneError = !!fieldState.error;
-  const errorId = `${phoneName}-error`;
+  const errorId = `${name}-error`;
 
   const flag = field.value?.startsWith("+421")
     ? "SK"

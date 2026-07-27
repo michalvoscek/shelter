@@ -1,7 +1,9 @@
 "use client";
 
+import { useController } from "react-hook-form";
 import styled from "styled-components";
 import { CheckIcon } from "../icons";
+import { FieldError } from "./FieldError";
 
 const CheckboxBox = styled.span`
   display: inline-flex;
@@ -46,28 +48,34 @@ const CheckboxLabel = styled.label`
 `;
 
 export function Checkbox({
+  name,
   children,
-  errorId,
-  hasError,
   ...props
 }: {
-  errorId: string;
-  hasError: boolean;
+  name: string;
   children: React.ReactNode;
 } & React.InputHTMLAttributes<HTMLInputElement>) {
+  const { field, fieldState } = useController({ name });
+  const hasError = !!fieldState.error;
+  const errorId = `${name}-error`;
+
   return (
-    <CheckboxLabel>
-      <input
-        type="checkbox"
-        aria-invalid={hasError || undefined}
-        aria-describedby={hasError ? errorId : undefined}
-        aria-errormessage={hasError ? errorId : undefined}
-        {...props}
-      />
-      <CheckboxBox>
-        <CheckIcon size={14} strokeWidth={3} />
-      </CheckboxBox>
-      {children}
-    </CheckboxLabel>
+    <>
+      <CheckboxLabel>
+        <input
+          type="checkbox"
+          aria-invalid={hasError || undefined}
+          aria-describedby={hasError ? errorId : undefined}
+          aria-errormessage={hasError ? errorId : undefined}
+          {...props}
+          {...field}
+        />
+        <CheckboxBox>
+          <CheckIcon size={14} strokeWidth={3} />
+        </CheckboxBox>
+        {children}
+      </CheckboxLabel>
+      <FieldError error={fieldState.error} id={errorId} />
+    </>
   );
 }

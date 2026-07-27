@@ -1,6 +1,7 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { useController } from "react-hook-form";
 import styled from "styled-components";
 import { useShelters, type Shelter } from "../../hooks/useShelters";
 import { ChevronDownIcon } from "../icons";
@@ -82,20 +83,16 @@ const ErrorMsg = styled(StatusMessage)`
 `;
 
 type ShelterComboboxProps = {
-  value: number | null;
-  onChange: (id: number | null) => void;
+  name: string;
   placeholder: string;
-  error?: { message?: string };
-  errorId: string;
 };
 
 export function ShelterCombobox({
-  value,
-  onChange,
+  name,
   placeholder,
-  error,
-  errorId,
 }: ShelterComboboxProps) {
+  const { field, fieldState } = useController({ name });
+  const error = fieldState.error;
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [highlightedIndex, setHighlightedIndex] = useState(-1);
@@ -103,7 +100,7 @@ export function ShelterCombobox({
 
   const { data: shelters, isLoading, isError } = useShelters(search);
 
-  const currentShelter = shelters?.find((s) => s.id === value);
+  const currentShelter = shelters?.find((s) => s.id === field.value);
 
   const open = () => {
     setIsOpen(true);
@@ -112,13 +109,13 @@ export function ShelterCombobox({
 
   const close = () => {
     setIsOpen(false);
-    if (value !== null && currentShelter) {
+    if (field.value !== null && currentShelter) {
       setSearch(currentShelter.name);
     }
   };
 
   const select = (shelter: Shelter) => {
-    onChange(shelter.id);
+    field.onChange(shelter.id);
     setSearch(shelter.name);
     setIsOpen(false);
   };
@@ -184,8 +181,8 @@ export function ShelterCombobox({
         onKeyDown={handleKeyDown}
         placeholder={placeholder}
         aria-invalid={!!error}
-        aria-describedby={error ? errorId : undefined}
-        aria-errormessage={error ? errorId : undefined}
+        aria-describedby={error ? `${name}-error` : undefined}
+        aria-errormessage={error ? `${name}-error` : undefined}
         aria-expanded={isOpen}
         aria-autocomplete="list"
         role="combobox"
@@ -208,7 +205,7 @@ export function ShelterCombobox({
               <Option
                 key={shelter.id}
                 role="option"
-                aria-selected={shelter.id === value}
+                aria-selected={shelter.id === field.value}
                 $highlighted={index === highlightedIndex}
                 onMouseDown={(e) => {
                   e.preventDefault();
@@ -221,7 +218,7 @@ export function ShelterCombobox({
             ))}
         </Dropdown>
       )}
-      <FieldError error={error} id={errorId} />
+      <FieldError error={error} id={`${name}-error`} />
     </Wrapper>
   );
 }
