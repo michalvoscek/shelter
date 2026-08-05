@@ -4,7 +4,7 @@ A multi-step donation wizard for a Slovak animal shelter, built with Next.js.
 
 ## Deployment
 
-Deployed to **GitHub Pages** at [michalvoscek.github.io/shelter](https://michalvoscek.github.io/shelter). For this reason whole app has `/shelter` base URL.
+Requires a **Node.js runtime** (e.g. Vercel or a self-hosted `next start`), because the app uses a route handler (`/api/donation-status`) and a server action. It is not a static site.
 
 ## Tech Stack
 

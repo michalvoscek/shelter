@@ -9,6 +9,7 @@ import { useReducedMotion } from "@mantine/hooks";
 import { DonationProvider, useDonationForm } from "./DonationContext";
 import { useStepNavigation, STEP_FIELDS } from "../../hooks/useStepNavigation";
 import { useSubmitDonation } from "../../hooks/useSubmitDonation";
+import { refreshDonationStatus } from "@/lib/actions";
 import {
   SubmissionError,
   type SubmitDonationPayload,
@@ -153,6 +154,7 @@ function DonationChrome() {
       mutation.reset();
       mutation.mutate(payload, {
         onSuccess: () => {
+          refreshDonationStatus().catch(() => {});
           router.push("/thank-you");
         },
       });

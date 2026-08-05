@@ -1,8 +1,8 @@
 "use client";
 
-import { useQuery } from "@tanstack/react-query";
 import styled from "styled-components";
 import SubPage from "@/components/SubPage";
+import { useDonationStatus } from "@/hooks/useDonationStatus";
 
 const Paragraph = styled.p`
   max-width: 100%;
@@ -51,21 +51,8 @@ const Stat = styled.div`
   }
 `;
 
-type Results = {
-  contributors: number;
-  contribution: number;
-};
-
 export default function AboutContent() {
-  const { data, isLoading, isError } = useQuery<Results>({
-    queryKey: ["shelter-results"],
-    queryFn: () =>
-      fetch(
-        "https://frontend-assignment-api.goodrequest.dev/api/v1/shelters/results",
-      ).then((res) => res.json()),
-    refetchOnMount: "always",
-    gcTime: 0,
-  });
+  const { data, isLoading, isError } = useDonationStatus();
 
   return (
     <SubPage title="O projekte">

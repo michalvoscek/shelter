@@ -5,6 +5,11 @@ export type ApiMessage = {
   type: ApiMessageType;
 };
 
+export type DonationStatus = {
+  contribution: number;
+  contributors: number;
+};
+
 export type SubmitDonationPayload = {
   contributors: {
     firstName: string;
